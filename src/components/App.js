@@ -11,7 +11,6 @@ function App() {
 
   return (
     <div className='App'>
-      <NavBar />
       <Switch>
         <Route path="/jobs">
           <JobList />
@@ -26,6 +25,7 @@ function App() {
           <Home />
         </Route>
       </Switch>
+      <NavBar />
     </div>
   );
 }
