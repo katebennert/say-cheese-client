@@ -1,10 +1,11 @@
 import '../App.css';
 import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
-import './JobList';
-import './FreelancerList';
-import './CreateJob';
-import './NavBar';
+import JobList from './JobList';
+import FreelancerList from './FreelancerList';
+import CreateJob from './CreateJob';
+import NavBar from './NavBar';
+import Home from './Home';
 
 function App() {
 
@@ -13,10 +14,10 @@ function App() {
       <NavBar />
       <Switch>
         <Route path="/jobs">
-          <Jobs />
+          <JobList />
         </Route>
         <Route path="/freelancers">
-          <Freelancers />
+          <FreelancerList />
         </Route>
         <Route path="/create-job">
           <CreateJob />
