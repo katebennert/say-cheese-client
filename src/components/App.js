@@ -1,4 +1,4 @@
-import '../App.css';
+import '../styling/App.css';
 import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import JobList from './JobList';
@@ -10,7 +10,7 @@ import Home from './Home';
 function App() {
 
   return (
-    <div>
+    <div className='App'>
       <NavBar />
       <Switch>
         <Route path="/jobs">

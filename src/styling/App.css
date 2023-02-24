@@ -1,5 +1,13 @@
+@import './fonts.css';
+
 .App {
   text-align: center;
+  font-family: 'Martel', serif;
+}
+
+h1 {
+  font-family: 'Fontdiner Swanky', cursive;
+  color: #f735d7
 }
 
 /* Add a black background color to the top navigation */
@@ -20,7 +28,7 @@
 
 /* Change the color of links on hover */
 .navbar a:hover {
-  background-color: #f70202;
+  background-color: #f735d7;
   color: black;
 }
 
@@ -28,10 +36,6 @@
 .navbar a.active {
   background-color: hsl(68, 90%, 55%);
   color: black;
-}
-
-h1 {
-  color: blue
 }
 
 .App-logo {
