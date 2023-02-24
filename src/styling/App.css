@@ -44,6 +44,7 @@ button {
   position: relative;
   cursor: pointer;
   margin-left: 1rem;
+  margin-bottom: 1rem;
 }
 button::after {
   content: '';

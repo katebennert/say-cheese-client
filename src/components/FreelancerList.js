@@ -1,9 +1,13 @@
 import React from "react";
 
-function FreelancerList() {
+function FreelancerList({ freelancers }) {
   return (
-    <div>
-      <h1>Home Page</h1>
+    <div className="list">
+        <ul>
+            {freelancers.map(freelancer => (
+                <li>{freelancer.name}</li>
+            ))}
+        </ul>
     </div>
   )
 }
