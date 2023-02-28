@@ -5,12 +5,17 @@ function Job({ job }) {
     <div className="job-card">
         <div className="job-box">
             <div className="job-box-top">
-                <img className="job-box-image" src="https://images.unsplash.com/photo-1677048917344-8e846a2e2ac9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDY1fHRvd0paRnNrcEdnfHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60" alt={job.name}/>
+                <img className="job-box-image" src="https://images.unsplash.com/photo-1542992804-34f8f4cb193b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8cGhvdG9zaG9vdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60" alt={job.name}/>
                 <div className="job-title-flex">
                     <h3 className="job-box-title">{job.name}</h3>
                     <p className="company">{job.company}</p>
-                </div> {/* title-flex */}
-                <p className="job-description">Whipped steamed roast cream beans macchiato skinny grinder café. Iced grinder go mocha steamed grounds cultivar panna aroma.</p>
+                </div> 
+                <p className="job-description">{job.description}</p>
+                <div className="job-info">
+                    <p>Start Date: {job.start_date}</p>
+                    <p>End Date: {job.end_date}</p>
+                    <p>Freelancers Needed: {job.freelancers_needed}</p>
+                </div>
             </div> {/* box-top */}
             <button className="delete-button">Remove Job</button>
         </div> {/* box */}
