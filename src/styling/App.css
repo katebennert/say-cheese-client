@@ -1,8 +1,10 @@
 @import './fonts.css';
 
-.App {
-  align-items: center;
-  font-family: 'Martel', serif;
+:root {
+  --citron: hsl(68, 90%, 55%);
+  /* --blue: rgb(0, 85, 255); */
+  --blue: rgb(26, 159, 254);
+  --bright-pink: #f735d7;
 }
 
 h1 {
@@ -36,19 +38,16 @@ h2 {
 }
 
 body {
-  background-color: rgb(0, 85, 255);
+  background-color: var(--blue);
   font-family: 'Martel', serif;
   color: white;
   margin-left: 3rem;
+  margin-right: 3rem;
   /* display: grid; */
   /* place-items: center; */
   height: 100vh;
   /* -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; */
-}
-
-.list {
-  /* flexbox for the cards */
 }
 
 button {
@@ -57,7 +56,7 @@ button {
   border: solid 2px black;
   outline: 0;
   padding: 1rem 4rem;
-  font-size: 1.5rem;
+  font-size: 1rem;
   letter-spacing: 0.08rem;
   background-color: white;
   border-radius: 0.35rem;
@@ -90,16 +89,6 @@ button.style-1:hover::after {
   left: 0.5rem;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
 /* word animation */
 *,
 *:before,
@@ -112,7 +101,7 @@ button.style-1:hover::after {
 
 .wrapper{
     box-sizing: content-box;
-    background-color: rgb(0, 85, 255);
+    background-color: var(--blue);
     height: 30px;
     padding: 50px 30px;
     display: flex;
@@ -160,3 +149,186 @@ span{
         transform: translateY(-400%);
     }
 }
+
+/* freelancer cards */
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+h3 {
+  font-size: 1.5em;
+  font-weight: 700;
+  color: black;
+}
+
+p {
+  font-size: 1em;
+  line-height: 1.7;
+  font-weight: 300;
+  color: gray;
+}
+
+.description {
+  white-space: wrap;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.wrap {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  columns: 4;
+  align-items: stretch;
+  width: 100%;
+  gap: 24px;
+  padding: 5rem;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  position: relative;
+  padding: 24px;
+  background: #fff;
+  max-width: 500px;
+  border: solid 2px black;
+  border-radius: 0.35rem;
+}
+
+.box-top {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  gap: 12px;
+  margin-bottom: 36px;
+}
+
+.box-image {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  object-position: 50% 20%;
+}
+
+.title-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.box-title {
+  border-left: 3px solid var(--citron);
+  padding-left: 12px;
+}
+
+.user-follow-info {
+  color: hsl(0, 0%, 60%);
+}
+
+.button {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: auto;
+  padding: 16px;
+  color: #000;
+  background: transparent;
+  box-shadow: 0px 0px 0px 1px black inset;
+  transition: background 0.4s ease;
+}
+
+.button:hover {
+  background: var(--bright-pink);
+}
+
+.fill-one {
+  background: white;
+}
+
+.fill-two {
+  background: white;
+}
+
+/* RESPONSIVE QUERIES */
+
+@media (min-width: 320px) {
+  .title-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: start;
+  }
+  .user-follow-info {
+    margin-top: 6px;
+  }
+}
+
+@media (min-width: 460px) {
+  .title-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+  }
+  .user-follow-info {
+    margin-top: 6px;
+  }
+}
+
+@media (min-width: 640px) {
+  .box {
+    flex-basis: calc(50% - 12px);
+  }
+  .title-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: start;
+  }
+  .user-follow-info {
+    margin-top: 6px;
+  }
+}
+
+@media (min-width: 840px) {
+  .title-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+  }
+  .user-follow-info {
+    margin-top: 6px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .box {
+    flex-basis: calc(33.3% - 16px);
+  }
+  .title-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: start;
+  }
+  .user-follow-info {
+    margin-top: 6px;
+  }
+}
+
+@media (min-width: 1100px) {
+  .box {
+    flex-basis: calc(25% - 18px);
+  }
+}
+
