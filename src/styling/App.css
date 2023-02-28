@@ -123,7 +123,9 @@ button.style-1:hover::after {
 span{
     display: block;
     height: 100%;
+    margin-top: 2px;
     padding-left: 10px;
+    padding-bottom: 50px;
     color: hsl(68, 90%, 55%);
     animation: spin_words 6s infinite;
     font-family: 'Fontdiner Swanky', cursive;
