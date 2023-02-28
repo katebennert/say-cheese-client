@@ -5,7 +5,7 @@ function FreelancerList({ freelancers }) {
   return (
         <div className="wrap">
                 {freelancers.map(freelancer => (
-                    <Freelancer freelancer={freelancer}/>
+                    <Freelancer key={freelancer.id} freelancer={freelancer}/>
                 ))}
         </div>
    

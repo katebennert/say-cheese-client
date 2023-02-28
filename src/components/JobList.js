@@ -1,16 +1,13 @@
 import React from "react";
+import Job from "./Job";
 
 function JobList({ jobs }) {
 
-    
-
     return (
-        <div className="list">
-            <ul>
+        <div className="wrap">
             {jobs.map(job => (
-                <li>{job.name}</li>
+                <Job key={job.id} job={job}/>
             ))}
-        </ul>
         </div>
     )
 }
