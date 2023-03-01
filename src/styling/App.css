@@ -266,7 +266,7 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: start;
+    align-items: flex-start;
   }
   .user-follow-info {
     margin-top: 6px;
@@ -278,7 +278,7 @@ a {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: start;
+    align-items: flex-start;
   }
   .user-follow-info {
     margin-top: 6px;
@@ -293,7 +293,7 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: start;
+    align-items: flex-start;
   }
   .user-follow-info {
     margin-top: 6px;
@@ -305,7 +305,7 @@ a {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: start;
+    align-items: flex-start;
   }
   .user-follow-info {
     margin-top: 6px;
@@ -320,7 +320,7 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: start;
+    align-items: flex-start;
   }
   .user-follow-info {
     margin-top: 6px;
@@ -449,7 +449,7 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: start;
+    align-items: flex-start;
   }
   .company {
     margin-top: 6px;
@@ -461,7 +461,7 @@ a {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: start;
+    align-items: flex-start;
   }
   .company {
     margin-top: 6px;
@@ -476,7 +476,7 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: start;
+    align-items: flex-start;
   }
   .company {
     margin-top: 6px;
@@ -488,7 +488,7 @@ a {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: start;
+    align-items: flex-start;
   }
   .company {
     margin-top: 6px;
@@ -503,7 +503,7 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: start;
+    align-items: flex-start;
   }
   .company {
     margin-top: 6px;

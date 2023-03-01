@@ -1,6 +1,6 @@
 import '../styling/App.css';
 import React, { useState, useEffect } from "react";
-import { Route, Switch, useRouteMatch} from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import JobList from './JobList';
 import FreelancerList from './FreelancerList';
 import CreateJob from './CreateJob';
@@ -25,6 +25,11 @@ function App() {
       .then(freelancers => setFreelancers(freelancers));
   }, []);
 
+  function handleDeleteJob(id) {
+    const updatedJobs = jobs.filter((job) => job.id !== id);
+    setJobs(updatedJobs);
+  }
+
   return (
     <div className='App'>
       <NavBar />
@@ -33,7 +38,7 @@ function App() {
           <JobList jobs={jobs} />
         </Route>
         <Route path="/jobs/:id">
-          <JobPage />
+          <JobPage onJobDelete={handleDeleteJob}/>
         </Route>
         <Route path="/freelancers">
           <FreelancerList freelancers={freelancers} />
