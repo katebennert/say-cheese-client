@@ -1,11 +1,12 @@
 import '../styling/App.css';
 import React, { useState, useEffect } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useRouteMatch} from "react-router-dom";
 import JobList from './JobList';
 import FreelancerList from './FreelancerList';
 import CreateJob from './CreateJob';
 import NavBar from './NavBar';
 import Home from './Home';
+import JobPage from './JobPage';
 
 function App() {
 
@@ -28,8 +29,11 @@ function App() {
     <div className='App'>
       <NavBar />
       <Switch>
-        <Route path="/jobs">
+        <Route exact path="/jobs">
           <JobList jobs={jobs} />
+        </Route>
+        <Route path="/jobs/:id">
+          <JobPage />
         </Route>
         <Route path="/freelancers">
           <FreelancerList freelancers={freelancers} />

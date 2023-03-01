@@ -1,9 +1,14 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 
-function UpdateJob() {
+function UpdateJob({ jobs }) {
+
+    const params = useParams();
+    console.log(params);
+
   return (
     <div>
-      <h1>Home Page</h1>
+      <h3>hi</h3>
     </div>
   )
 }
