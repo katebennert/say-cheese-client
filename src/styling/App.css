@@ -3,7 +3,8 @@
 :root {
   --citron: hsl(68, 90%, 55%);
   /* --blue: rgb(0, 85, 255); */
-  --blue: rgb(26, 159, 254);
+  /* --blue: rgb(26, 159, 254); FAV BLUE */
+  --blue: rgb(216, 201, 249);
   --bright-pink: #f735d7;
 }
 
@@ -20,6 +21,10 @@ h1 {
 h2 {
   text-align: center;
   font-size: 2rem;
+}
+
+.assign-freelancer-list {
+  color: black;
 }
 
 .nav-buttons {

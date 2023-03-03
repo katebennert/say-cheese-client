@@ -1,28 +1,46 @@
 import React, { useEffect, useState } from "react";
-import { useParams, NavLink } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-function JobPage({ onJobDelete }) {
-    const [job, setJob] = useState({});
+function JobPage({ onJobDelete, freelancers }) {
+    const [job, setJob] = useState([]);
+    const [freelancersOn, setFreelancersOn] = useState([]);
     const [showRedirect, setShowRedirect] = useState(false);
+    const [showFreelancerList, setShowFreelancerList] = useState(false);
     const { id } = useParams();
     
     useEffect(() => {
         fetch(`http://localhost:9292/jobs/${id}`)
             .then(r => r.json())
-            .then(jobData => setJob(jobData))
+            .then(jobData => {
+                setJob(jobData)
+                setFreelancersOn(jobData.freelancers.map(freelancer => freelancer.name))
+            })
     }, [id]);
 
     function handleDeleteClick() {
+        // UnCOMMENT FOR REAL DELETE
         // fetch(`http://localhost:9292/jobs/${id}`, {
         //   method: "DELETE",
         // });
     
         // onJobDelete(id);
         setShowRedirect(true);
-      }
+        setShowFreelancerList(false);
+    }
+
+    function handleAssignFreelancersClick() {
+        setShowFreelancerList(true);
+    }
+
+    function handleAssignToJobClick(e) {
+        // patch request to update freelancer table to available true and job id to job id
+        // patch request to update jobs table to update freelancers needed and is full for that job
+        // update state for job and jobs?
+        // update state for freelancers?
+        // updata state for freelancersOn
+        setFreelancersOn([...freelancersOn, e.target.value])
+    }
     
-    // full job details with "Remove Job" button and "Assign Freelancers" button. 
-    // Remove job button will make 'delete' request to server
     // assign freelancers will pull up available freelancer list and clicking on a freelancer from that list will 
     // update isAvail to false and add the freelancer to the job
     const jobPageCard = (
@@ -39,10 +57,11 @@ function JobPage({ onJobDelete }) {
                  <p>Start Date: {job.start_date}</p>
                  <p>End Date: {job.end_date}</p>
                  <p>Freelancers Needed: {job.freelancers_needed}</p>
+                 <p>Freelancers On This Project: {freelancersOn.map(freelancer => freelancer + " ")}</p>
              </div>
          </div> 
          <div className="job-buttons-container">
-             <button>Assign Freelancers</button>
+             <button onClick={handleAssignFreelancersClick}>Assign Freelancers</button>
              <button onClick={handleDeleteClick}>Delete Job</button>
          </div>
      </div> 
@@ -50,14 +69,27 @@ function JobPage({ onJobDelete }) {
     )
 
     const redirectMessage = (
-        <div>
+        <div className="message">
             <h2>This job has been deleted! 🙅‍♀️ Go browse for other jobs.</h2>
         </div>
     )
 
+    const availableFreelancers = freelancers.filter(freelancer => freelancer.is_available === true);
+
+    const freelancerList = (
+        <div className="job-box">{availableFreelancers.map(freelancer => (
+            <div className="assign-freelancer-list" key={freelancer.id}>
+                <div>{freelancer.name}</div>
+                <button onClick={handleAssignToJobClick} value={freelancer.name} >Assign to Job</button>
+            </div>
+        ))}</div>
+    )
 
     return (
-       <div>{showRedirect ? redirectMessage : jobPageCard}</div>
+        <div className="wrap">
+            <div>{showRedirect ? redirectMessage : jobPageCard}</div>
+            <div>{showFreelancerList ? freelancerList : null}</div>
+        </div>
     );
 }
 

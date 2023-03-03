@@ -38,7 +38,7 @@ function App() {
           <JobList jobs={jobs} />
         </Route>
         <Route path="/jobs/:id">
-          <JobPage onJobDelete={handleDeleteJob}/>
+          <JobPage onJobDelete={handleDeleteJob} freelancers={freelancers}/>
         </Route>
         <Route path="/freelancers">
           <FreelancerList freelancers={freelancers} />
