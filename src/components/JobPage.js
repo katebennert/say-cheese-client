@@ -36,7 +36,7 @@ function JobPage({ onJobDelete, freelancers }) {
         // patch request to update freelancer table to available true and job id to job id
         // patch request to update jobs table to update freelancers needed and is full for that job
         // update state for job and jobs?
-        // update state for freelancers?
+        // update state for freelancers available (need to attach state to this)
         // updata state for freelancersOn
         setFreelancersOn([...freelancersOn, e.target.value])
     }
@@ -57,7 +57,7 @@ function JobPage({ onJobDelete, freelancers }) {
                  <p>Start Date: {job.start_date}</p>
                  <p>End Date: {job.end_date}</p>
                  <p>Freelancers Needed: {job.freelancers_needed}</p>
-                 <p>Freelancers On This Project: {freelancersOn.map(freelancer => freelancer + " ")}</p>
+                 <p>Freelancers On This Project: {freelancersOn.join(", ")}</p>
              </div>
          </div> 
          <div className="job-buttons-container">
