@@ -2,35 +2,40 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 function JobPage({ onJobDelete, freelancers }) {
+    const { id } = useParams();
     const [job, setJob] = useState([]);
     const [freelancersOn, setFreelancersOn] = useState([]);
+    const [freelancersNeeded, setFreelancersNeeded] = useState(null);
     const [showRedirect, setShowRedirect] = useState(false);
     const [showFreelancerList, setShowFreelancerList] = useState(false);
     const [availableFreelancers, setAvailableFreelancers] = useState([]);
-    const { id } = useParams();
-    
+    const [isFull, setIsFull] = useState(false);
+
     useEffect(() => {
         fetch(`http://localhost:9292/jobs/${id}`)
             .then(r => r.json())
             .then(jobData => {
                 setJob(jobData)
                 setFreelancersOn(jobData.freelancers.map(freelancer => freelancer.name))
+                setAvailableFreelancers(freelancers.filter(freelancer => freelancer.is_available === true))
+                setFreelancersNeeded(jobData.freelancers_needed)
+                setIsFull(jobData.is_full)
             })
     }, [id]);
 
     function handleDeleteClick() {
-        // UnCOMMENT FOR REAL DELETE
-        // fetch(`http://localhost:9292/jobs/${id}`, {
-        //   method: "DELETE",
-        // });
+       // UnCOMMENT FOR REAL DELETE
+        fetch(`http://localhost:9292/jobs/${id}`, {
+          method: "DELETE",
+        });
     
-        // onJobDelete(id);
+        // need to patch to fix freelancers situations after a job is deleted
         setShowRedirect(true);
         setShowFreelancerList(false);
     }
 
     function handleAssignFreelancersClick() {
-        setAvailableFreelancers(freelancers.filter(freelancer => freelancer.is_available === true));
+        setAvailableFreelancers(freelancers.filter(freelancer => freelancer.is_available === true))
         setShowFreelancerList(true);
     }
 
@@ -51,16 +56,31 @@ function JobPage({ onJobDelete, freelancers }) {
             .then(r => r.json())
             .then(updatedFreelancer => setAvailableFreelancers(availableFreelancers.filter(freelancer => freelancer.id !== updatedFreelancer.id)))
             .then(setFreelancersOn([...freelancersOn, currentFreelancer.name]));
-            
+
+
         // patch request to update jobs table to update freelancers needed and is full for that job
-        // update state for job and jobs?
-        // update state for freelancers available (need to attach state to this)
-        // updata state for freelancersOn
+
+        fetch(`http://localhost:9292/jobs/${job.id}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              is_full: job.freelancers_needed - 1 === 0 ? true : false,
+              freelancers_needed: job.freelancers_needed - 1
+            }),
+        })
+            .then(r => r.json())
+            .then(updatedJob => {
+                setJob(updatedJob)
+                setFreelancersNeeded(updatedJob.freelancers_needed)
+                setIsFull(updatedJob.is_full)
+            })  
+
+        // update state for job and jobs? (why?)
         
     }
-    
-    // assign freelancers will pull up available freelancer list and clicking on a freelancer from that list will 
-    // update isAvail to false and add the freelancer to the job
+
     const jobPageCard = (
         <div className="job-page-card-container">
      <div className="job-box">
@@ -74,8 +94,9 @@ function JobPage({ onJobDelete, freelancers }) {
              <div className="job-info">
                  <p>Start Date: {job.start_date}</p>
                  <p>End Date: {job.end_date}</p>
-                 <p>Freelancers Needed: {job.freelancers_needed}</p>
+                 <p>Freelancers Needed: {freelancersNeeded}</p>
                  <p>Freelancers On This Project: {freelancersOn.join(", ")}</p>
+                 <p>{isFull ? "FULL" : "HIRING"}!</p>
              </div>
          </div> 
          <div className="job-buttons-container">

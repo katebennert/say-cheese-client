@@ -10,14 +10,7 @@ import JobPage from './JobPage';
 
 function App() {
 
-  const [jobs, setJobs] = useState([]);
   const [freelancers, setFreelancers] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:9292/jobs")
-      .then(r => r.json())
-      .then(jobs => setJobs(jobs));
-  }, []);
 
   useEffect(() => {
     fetch("http://localhost:9292/freelancers")
@@ -25,20 +18,15 @@ function App() {
       .then(freelancers => setFreelancers(freelancers));
   }, []);
 
-  function handleDeleteJob(id) {
-    const updatedJobs = jobs.filter((job) => job.id !== id);
-    setJobs(updatedJobs);
-  }
-
   return (
     <div className='App'>
       <NavBar />
       <Switch>
         <Route exact path="/jobs">
-          <JobList jobs={jobs} />
+          <JobList />
         </Route>
         <Route path="/jobs/:id">
-          <JobPage onJobDelete={handleDeleteJob} freelancers={freelancers}/>
+          <JobPage freelancers={freelancers}/>
         </Route>
         <Route path="/freelancers">
           <FreelancerList freelancers={freelancers} />
