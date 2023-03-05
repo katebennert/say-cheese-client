@@ -41,42 +41,40 @@ function JobPage({ availableFreelancers, setAvailableFreelancers }) {
         const freelancerId = e.target.value;
         const currentFreelancer = availableFreelancers.find(freelancer => freelancer.id == e.target.value);
 
-        fetch(`http://localhost:9292/freelancers/${freelancerId}`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              is_available: false,
-              job_id: job.id
-            }),
-          })
-            .then(r => r.json())
-            .then(updatedFreelancer => setAvailableFreelancers(availableFreelancers.filter(freelancer => freelancer.id !== updatedFreelancer.id)))
-            .then(setFreelancersOn([...freelancersOn, currentFreelancer.name]));
+        if (!isFull) {
+            fetch(`http://localhost:9292/freelancers/${freelancerId}`, {
+                method: "PATCH",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                is_available: false,
+                job_id: job.id
+                }),
+            })
+                .then(r => r.json())
+                .then(updatedFreelancer => setAvailableFreelancers(availableFreelancers.filter(freelancer => freelancer.id !== updatedFreelancer.id)))
+                .then(setFreelancersOn([...freelancersOn, currentFreelancer.name]));
 
-
-        // patch request to update jobs table to update freelancers needed and is full for that job
-
-        fetch(`http://localhost:9292/jobs/${job.id}`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              is_full: job.freelancers_needed - 1 === 0 ? true : false,
-              freelancers_needed: job.freelancers_needed - 1
-            }),
-        })
-            .then(r => r.json())
-            .then(updatedJob => {
-                setJob(updatedJob)
-                setFreelancersNeeded(updatedJob.freelancers_needed)
-                setIsFull(updatedJob.is_full)
-            })  
-
-        // update state for job and jobs? (why?)
-        
+            fetch(`http://localhost:9292/jobs/${job.id}`, {
+                method: "PATCH",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                is_full: job.freelancers_needed - 1 === 0 ? true : false,
+                freelancers_needed: job.freelancers_needed - 1
+                }),
+            })
+                .then(r => r.json())
+                .then(updatedJob => {
+                    setJob(updatedJob)
+                    setFreelancersNeeded(updatedJob.freelancers_needed)
+                    setIsFull(updatedJob.is_full)
+                })  
+        } else {
+            alert("This job is full!")
+        }
     }
 
     const jobPageCard = (
