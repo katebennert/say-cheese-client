@@ -6,6 +6,7 @@ function JobPage({ onJobDelete, freelancers }) {
     const [freelancersOn, setFreelancersOn] = useState([]);
     const [showRedirect, setShowRedirect] = useState(false);
     const [showFreelancerList, setShowFreelancerList] = useState(false);
+    const [availableFreelancers, setAvailableFreelancers] = useState([]);
     const { id } = useParams();
     
     useEffect(() => {
@@ -29,16 +30,33 @@ function JobPage({ onJobDelete, freelancers }) {
     }
 
     function handleAssignFreelancersClick() {
+        setAvailableFreelancers(freelancers.filter(freelancer => freelancer.is_available === true));
         setShowFreelancerList(true);
     }
 
     function handleAssignToJobClick(e) {
-        // patch request to update freelancer table to available true and job id to job id
+        const freelancerId = e.target.value;
+        const currentFreelancer = freelancers.find(freelancer => freelancer.id == e.target.value);
+
+        fetch(`http://localhost:9292/freelancers/${freelancerId}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              is_available: false,
+              job_id: job.id
+            }),
+          })
+            .then(r => r.json())
+            .then(updatedFreelancer => setAvailableFreelancers(availableFreelancers.filter(freelancer => freelancer.id !== updatedFreelancer.id)))
+            .then(setFreelancersOn([...freelancersOn, currentFreelancer.name]));
+            
         // patch request to update jobs table to update freelancers needed and is full for that job
         // update state for job and jobs?
         // update state for freelancers available (need to attach state to this)
         // updata state for freelancersOn
-        setFreelancersOn([...freelancersOn, e.target.value])
+        
     }
     
     // assign freelancers will pull up available freelancer list and clicking on a freelancer from that list will 
@@ -74,13 +92,11 @@ function JobPage({ onJobDelete, freelancers }) {
         </div>
     )
 
-    const availableFreelancers = freelancers.filter(freelancer => freelancer.is_available === true);
-
     const freelancerList = (
         <div className="job-box">{availableFreelancers.map(freelancer => (
             <div className="assign-freelancer-list" key={freelancer.id}>
                 <div>{freelancer.name}</div>
-                <button onClick={handleAssignToJobClick} value={freelancer.name} >Assign to Job</button>
+                <button onClick={handleAssignToJobClick} value={freelancer.id}>Assign to Job</button>
             </div>
         ))}</div>
     )
