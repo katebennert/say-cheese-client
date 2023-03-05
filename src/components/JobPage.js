@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-function JobPage({ onJobDelete, freelancers }) {
+function JobPage({ availableFreelancers, setAvailableFreelancers }) {
     const { id } = useParams();
     const [job, setJob] = useState([]);
     const [freelancersOn, setFreelancersOn] = useState([]);
     const [freelancersNeeded, setFreelancersNeeded] = useState(null);
     const [showRedirect, setShowRedirect] = useState(false);
     const [showFreelancerList, setShowFreelancerList] = useState(false);
-    const [availableFreelancers, setAvailableFreelancers] = useState([]);
     const [isFull, setIsFull] = useState(false);
 
     useEffect(() => {
@@ -17,7 +16,6 @@ function JobPage({ onJobDelete, freelancers }) {
             .then(jobData => {
                 setJob(jobData)
                 setFreelancersOn(jobData.freelancers.map(freelancer => freelancer.name))
-                setAvailableFreelancers(freelancers.filter(freelancer => freelancer.is_available === true))
                 setFreelancersNeeded(jobData.freelancers_needed)
                 setIsFull(jobData.is_full)
             })
@@ -35,13 +33,13 @@ function JobPage({ onJobDelete, freelancers }) {
     }
 
     function handleAssignFreelancersClick() {
-        setAvailableFreelancers(freelancers.filter(freelancer => freelancer.is_available === true))
+        setAvailableFreelancers(availableFreelancers.filter(freelancer => freelancer.is_available === true))
         setShowFreelancerList(true);
     }
 
     function handleAssignToJobClick(e) {
         const freelancerId = e.target.value;
-        const currentFreelancer = freelancers.find(freelancer => freelancer.id == e.target.value);
+        const currentFreelancer = availableFreelancers.find(freelancer => freelancer.id == e.target.value);
 
         fetch(`http://localhost:9292/freelancers/${freelancerId}`, {
             method: "PATCH",

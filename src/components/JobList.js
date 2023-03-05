@@ -8,7 +8,7 @@ function JobList() {
     useEffect(() => {
         fetch("http://localhost:9292/jobs")
           .then(r => r.json())
-          .then(jobs => setJobs(jobs));
+          .then(jobData => setJobs(jobData));
       }, []);
 
     return (

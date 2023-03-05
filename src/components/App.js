@@ -11,11 +11,15 @@ import JobPage from './JobPage';
 function App() {
 
   const [freelancers, setFreelancers] = useState([]);
+  const [availableFreelancers, setAvailableFreelancers] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:9292/freelancers")
       .then(r => r.json())
-      .then(freelancers => setFreelancers(freelancers));
+      .then(freelancers => {
+        setFreelancers(freelancers)
+        setAvailableFreelancers(freelancers.filter(freelancer => freelancer.is_available === true))
+      });
   }, []);
 
   return (
@@ -26,7 +30,7 @@ function App() {
           <JobList />
         </Route>
         <Route path="/jobs/:id">
-          <JobPage freelancers={freelancers}/>
+          <JobPage availableFreelancers={availableFreelancers} setAvailableFreelancers={setAvailableFreelancers}/>
         </Route>
         <Route path="/freelancers">
           <FreelancerList freelancers={freelancers} />
