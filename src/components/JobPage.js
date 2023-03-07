@@ -28,7 +28,7 @@ function JobPage({ freelancers, jobs, availableFreelancers, onUpdateFreelancer, 
                 setShowRedirect(true);
                 setShowFreelancerList(false);
 
-                // will need to be wrapped in if
+                // will need to be wrapped in if for if there is zero?
                 // data.freelancers.forEach(freelancer => {
                 //     fetch(`http://localhost:9292/freelancers/${freelancer.id}`, {
                 //         method: "PATCH",
