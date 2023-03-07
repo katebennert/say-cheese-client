@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function Job({ job }) {
+    
 
   return (
     <div className="job-card-container">

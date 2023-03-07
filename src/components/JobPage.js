@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-function JobPage({ availableFreelancers, setAvailableFreelancers }) {
+function JobPage({ freelancers, jobs, availableFreelancers, onUpdateFreelancer, onDeleteJob, onUpdateJob }) {
     const { id } = useParams();
-    const [job, setJob] = useState([]);
-    const [freelancersOn, setFreelancersOn] = useState([]);
-    const [freelancersNeeded, setFreelancersNeeded] = useState(null);
     const [showRedirect, setShowRedirect] = useState(false);
     const [showFreelancerList, setShowFreelancerList] = useState(false);
-    const [isFull, setIsFull] = useState(false);
+    const [job, setJob] = useState({});
+    const [freelancersOn, setFreelancersOn] = useState([]);
 
     useEffect(() => {
         fetch(`http://localhost:9292/jobs/${id}`)
             .then(r => r.json())
             .then(jobData => {
-                setJob(jobData)
-                setFreelancersOn(jobData.freelancers.map(freelancer => freelancer.name))
-                setFreelancersNeeded(jobData.freelancers_needed)
-                setIsFull(jobData.is_full)
+                setJob(jobData);
+                setFreelancersOn(jobData.freelancers.map(freelancer => freelancer.name));
             })
     }, [id]);
 
@@ -25,53 +21,72 @@ function JobPage({ availableFreelancers, setAvailableFreelancers }) {
        // UnCOMMENT FOR REAL DELETE
         fetch(`http://localhost:9292/jobs/${id}`, {
           method: "DELETE",
-        });
-    
-        // need to patch to fix freelancers situations after a job is deleted
-        setShowRedirect(true);
-        setShowFreelancerList(false);
+        })
+            .then(r => r.json())
+            .then(deletedJob => {
+                onDeleteJob(deletedJob);
+                setShowRedirect(true);
+                setShowFreelancerList(false);
+
+                // will need to be wrapped in if
+                // data.freelancers.forEach(freelancer => {
+                //     fetch(`http://localhost:9292/freelancers/${freelancer.id}`, {
+                //         method: "PATCH",
+                //         headers: {
+                //             "Content-Type": "application/json",
+                //         },
+                //         body: JSON.stringify({
+                //             is_available: true,
+                //             job_id: null
+                //         }),
+                //     })
+                //         .then(r => r.json())
+                //         .then(updatedFreelancer => {
+                //             console.log(updatedFreelancer)
+                //         })
+                // })
+            })
     }
 
     function handleAssignFreelancersClick() {
-        setAvailableFreelancers(availableFreelancers.filter(freelancer => freelancer.is_available === true))
         setShowFreelancerList(true);
     }
 
     function handleAssignToJobClick(e) {
         const freelancerId = e.target.value;
-        const currentFreelancer = availableFreelancers.find(freelancer => freelancer.id == e.target.value);
 
-        if (!isFull) {
+        if (!job.is_full) {
             fetch(`http://localhost:9292/freelancers/${freelancerId}`, {
                 method: "PATCH",
                 headers: {
-                "Content-Type": "application/json",
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                is_available: false,
-                job_id: job.id
+                    is_available: false,
+                    job_id: job.id
                 }),
             })
                 .then(r => r.json())
-                .then(updatedFreelancer => setAvailableFreelancers(availableFreelancers.filter(freelancer => freelancer.id !== updatedFreelancer.id)))
-                .then(setFreelancersOn([...freelancersOn, currentFreelancer.name]));
+                .then(updatedFreelancer => {
+                    onUpdateFreelancer(updatedFreelancer)
+                    setFreelancersOn([...freelancersOn, updatedFreelancer.name])
+                })
 
             fetch(`http://localhost:9292/jobs/${job.id}`, {
                 method: "PATCH",
                 headers: {
-                "Content-Type": "application/json",
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                is_full: job.freelancers_needed - 1 === 0 ? true : false,
-                freelancers_needed: job.freelancers_needed - 1
+                    is_full: job.freelancers_needed - 1 === 0 ? true : false,
+                    freelancers_needed: job.freelancers_needed - 1
                 }),
             })
                 .then(r => r.json())
                 .then(updatedJob => {
-                    setJob(updatedJob)
-                    setFreelancersNeeded(updatedJob.freelancers_needed)
-                    setIsFull(updatedJob.is_full)
-                })  
+                    onUpdateJob(updatedJob);
+                    setJob(updatedJob);
+                })
         } else {
             alert("This job is full!")
         }
@@ -90,9 +105,9 @@ function JobPage({ availableFreelancers, setAvailableFreelancers }) {
              <div className="job-info">
                  <p>Start Date: {job.start_date}</p>
                  <p>End Date: {job.end_date}</p>
-                 <p>Freelancers Needed: {freelancersNeeded}</p>
-                 <p>Freelancers On This Project: {freelancersOn.join(", ")}</p>
-                 <p>{isFull ? "FULL" : "HIRING"}!</p>
+                 <p>Freelancers Needed: {job.freelancers_needed}</p>
+                 <p>Freelancers On This Project: {freelancersOn === [] ? "" : freelancersOn.join(", ")}</p>
+                 <p>{job.is_full ? "FULL" : "HIRING"}!</p>
              </div>
          </div> 
          <div className="job-buttons-container">
