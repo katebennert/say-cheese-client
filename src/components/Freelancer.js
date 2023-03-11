@@ -12,7 +12,7 @@ function Freelancer({ freelancer }) {
                 </div> {/* title-flex */}
                 <p className="description">Whipped steamed roast cream beans macchiato skinny grinder café. Iced grinder go mocha steamed grounds cultivar panna aroma.</p>
             </div> {/* box-top */}
-            <a href="#" className="button">Follow Kelsie</a>
+            <a href="#" className={freelancer.is_available ? "freelancer-button-green" : "freelancer-button-red"}>Follow Kelsie</a>
         </div> {/* box */}
     </div> 
   )

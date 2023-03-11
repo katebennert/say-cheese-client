@@ -271,7 +271,7 @@ a {
   flex-basis: 100%;
   position: relative;
   padding: 24px;
-  background: #fff;
+  background: white;
   max-width: 500px;
   border: solid 2px black;
   border-radius: 0.35rem;
@@ -307,7 +307,7 @@ a {
   color: hsl(0, 0%, 60%);
 }
 
-.button {
+.freelancer-button-green {
   display: block;
   justify-content: center;
   align-items: center;
@@ -315,7 +315,20 @@ a {
   margin-top: auto;
   padding: 16px;
   color: #000;
-  background: transparent;
+  background: var(--citron);
+  box-shadow: 0px 0px 0px 1px black inset;
+  transition: background 0.4s ease;
+}
+
+.freelancer-button-red {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: auto;
+  padding: 16px;
+  color: #000;
+  background: var(--bright-pink);
   box-shadow: 0px 0px 0px 1px black inset;
   transition: background 0.4s ease;
 }
