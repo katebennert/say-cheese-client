@@ -1,35 +1,62 @@
 import React, { useState } from "react";
 
-function CreateJob() {
+function CreateJob({ onCreateNewJob }) {
 
+    const [showCreateMessage, setShowCreateMessage] = useState(false);
     const [newJob, setNewJob] = useState({
         name: "",
         company: "",
-        companyLogo: "",
-        startDate: null,
-        endDate: null,
+        company_logo: "",
+        start_date: "",
+        end_date: "",
         description: "",
-        freelancersNeeded: null
+        freelancers_needed: 1,
+        is_open: true,
+        is_full: false
     });
 
     function handleChange(e) {
         const name = e.target.name;
         let value = e.target.value;
 
-        // if dropdown another thing
+        if (e.target.type === "select-one") {
+            value = Number(value)
+        }
 
         setNewJob({
             ...newJob,
             [name]: value
         });
-
-        console.log(newJob)
     }
 
-  return (
-    <div className="new-job-form">
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        fetch("http://localhost:9292/jobs", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newJob),
+        })
+            .then(r => r.json())
+            .then(newJobData => {
+                onCreateNewJob(newJobData)
+                setShowCreateMessage(true);
+            });
+    }
+   
+
+    const createMessage = (
+        <div>
+            <h2>Job "{newJob.name}" created! Go to browse jobs.</h2>
+        </div>
+    )
+
+    const newJobForm = (
+        <div className="new-job-form">
         <h2>✨ Create New Job ✨</h2>
-        <form>
+        <form onSubmit={handleSubmit}>
             <div className="inputbox">
                 <input 
                     type="text" 
@@ -55,9 +82,9 @@ function CreateJob() {
             <div className="inputbox">
                 <input 
                     type="text" 
-                    name="companyLogo" 
+                    name="company_logo" 
                     autoComplete="off"
-                    value={newJob.companyLogo}
+                    value={newJob.company_logo}
                     onChange={handleChange} 
                     required="required"
                 />
@@ -74,44 +101,52 @@ function CreateJob() {
                 />
                 <span>Job Description</span>
             </div>
-            <div className="inputbox">
+            <label>Start Date:</label>
+            <div className="inputbox-fixed">
                 <input 
-                    type="text" 
-                    name="startDate" 
+                    type="date" 
+                    name="start_date" 
                     autoComplete="off"
-                    value={newJob.startDate}
+                    value={newJob.start_date}
                     onChange={handleChange} 
                     required="required"
                 />
-                <span>Job Start Date</span>
             </div>
-            <div className="inputbox">
+            <label>End Date</label>
+            <div className="inputbox-fixed">
                 <input 
-                    type="text" 
-                    name="endDate" 
+                    type="date" 
+                    name="end_date" 
                     autoComplete="off"
-                    value={newJob.endDate}
+                    value={newJob.end_date}
                     onChange={handleChange} 
                     required="required"
                 />
-                <span>Job End Date</span>
             </div>
-            <div className="inputbox">
-                <input 
-                    type="text" 
-                    name="freelancersNeeded" 
-                    autoComplete="off"
-                    value={newJob.freelancersNeeded}
-                    onChange={handleChange} 
-                    required="required"
-                />
-                <span>Freelancers Needed</span>
+            <label>Freelancers Needed</label>
+            <div className="inputbox-fixed">
+                <select name="freelancers_needed" onChange={handleChange} value={newJob.freelancers_needed}>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                </select>
             </div>
             <div className="inputbox">
                 <button type="submit">Create Job</button>
             </div>
         </form>
     </div>
+    )
+
+  return (
+    <>{showCreateMessage ? createMessage : newJobForm}</>
     )
 }
 

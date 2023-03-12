@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-function JobPage({ freelancers, jobs, availableFreelancers, onUpdateFreelancer, onDeleteJob, onUpdateJob }) {
+function JobPage({ freelancers, jobs, availableFreelancers, onUpdateFreelancer, onDeleteJob, onUpdateJob, dateToString }) {
     const { id } = useParams();
     const [showRedirect, setShowRedirect] = useState(false);
     const [showFreelancerList, setShowFreelancerList] = useState(false);
@@ -103,8 +103,8 @@ function JobPage({ freelancers, jobs, availableFreelancers, onUpdateFreelancer, 
              </div> 
              <p className="job-description">{job.description}</p>
              <div className="job-info">
-                 <p>Start Date: {job.start_date}</p>
-                 <p>End Date: {job.end_date}</p>
+                 <p>Start Date: {dateToString(job.start_date)}</p>
+                 <p>End Date: {dateToString(job.end_date)}</p>
                  <p>Freelancers Needed: {job.freelancers_needed}</p>
                  <p>Freelancers On This Project: {freelancersOn === [] ? "" : freelancersOn.join(", ")}</p>
                  <p>{job.is_full ? "FULL" : "HIRING"}!</p>

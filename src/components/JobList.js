@@ -1,12 +1,12 @@
 import React from "react";
 import Job from "./Job";
 
-function JobList({ jobs }) {
+function JobList({ jobs, dateToString }) {
 
     return (
         <div className="wrap">
             {jobs.map(job => (
-                <Job key={job.id} job={job} />
+                <Job key={job.id} job={job} dateToString={dateToString}/>
             ))}
         </div>
     )

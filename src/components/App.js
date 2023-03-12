@@ -27,6 +27,20 @@ function App() {
       .then(jobData => setJobs(jobData));
     }, []);
 
+    function dateToString(date) {
+      let d = new Date(date),
+          month = '' + (d.getMonth() + 1),
+          day = '' + d.getDate(),
+          year = d.getFullYear();
+
+      if (month.length < 2) 
+          month = '0' + month;
+      if (day.length < 2) 
+          day = '0' + day;
+
+      return [year, month, day].join('-');
+  }
+
     function handleUpdateFreelancer(updatedFreelancer) {
     const updatedFreelancers = freelancers.map((freelancer) => {
       if (freelancer.id === updatedFreelancer.id) {
@@ -53,6 +67,10 @@ function App() {
       setJobs(updatedJobs);
   }
 
+  function handleCreateNewJob(newJob) {
+    setJobs([...jobs, newJob]);
+  }
+
   const availableFreelancers = freelancers.filter(freelancer => freelancer.is_available);
 
   return (
@@ -60,16 +78,16 @@ function App() {
       <NavBar />
       <Switch>
         <Route exact path="/jobs">
-          <JobList jobs={jobs}/>
+          <JobList jobs={jobs} dateToString={dateToString}/>
         </Route>
         <Route path="/jobs/:id">
-          <JobPage freelancers={freelancers} jobs={jobs} availableFreelancers={availableFreelancers} onDeleteJob={handleDeleteJob} onUpdateFreelancer={handleUpdateFreelancer} onUpdateJob={handleUpdateJob}/>
+          <JobPage freelancers={freelancers} jobs={jobs} availableFreelancers={availableFreelancers} onDeleteJob={handleDeleteJob} onUpdateFreelancer={handleUpdateFreelancer} onUpdateJob={handleUpdateJob} dateToString={dateToString}/>
         </Route>
         <Route path="/freelancers">
           <FreelancerList freelancers={freelancers} />
         </Route>
         <Route path="/create-job">
-          <CreateJob />
+          <CreateJob onCreateNewJob={handleCreateNewJob} />
         </Route>
         <Route exact path="/">
           <Home />

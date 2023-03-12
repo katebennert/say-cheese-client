@@ -63,7 +63,30 @@ form {
   margin-bottom: 5rem;
   color: black;
 }
+
 .new-job-form .inputbox input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border: 2px solid #000;
+  outline: none;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 1.2em;
+  font-family: sans-serif;
+}
+
+.new-job-form .inputbox-fixed {
+  position: relative;
+  width: 100%;
+  height: 1rem;
+  margin-bottom: 5rem;
+  color: black;
+}
+
+.new-job-form .inputbox-fixed input {
   position: absolute;
   top: 0;
   left: 0;
@@ -73,22 +96,40 @@ form {
   background: white;
   padding: 10px;
   border-radius: 10px;
-  font-size: 1.2em;
+  font-size: 1em;
 }
+
+.new-job-form .inputbox-fixed select {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border: 2px solid #000;
+  outline: none;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1em;
+}
+
 .new-job-form .inputbox:last-child {
   margin-bottom: 0;
 }
+
+.new-job-form label {
+  color: black;
+}
+
 .new-job-form .inputbox span {
   position: absolute;
-  top: 14px;
+  top: 5px;
   left: 20px;
   font-size: 1em;
   transition: 0.6s;
-  font-family: sans-serif;
 }
 .new-job-form .inputbox input:focus ~ span,
 .new-job-form .inputbox input:valid ~ span {
-  transform: translateX(-13px) translateY(-35px);
+  transform: translateX(-17px) translateY(-31px);
   font-size: 1em;
 }
 .new-job-form .inputbox button {

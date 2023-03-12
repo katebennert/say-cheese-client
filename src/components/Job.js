@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Job({ job }) {
-    
+function Job({ job, dateToString }) {
 
   return (
     <div className="job-card-container">
@@ -15,8 +14,8 @@ function Job({ job }) {
                 </div> 
                 <p className="job-description">{job.description}</p>
                 <div className="job-info">
-                    <p>Start Date: {job.start_date}</p>
-                    <p>End Date: {job.end_date}</p>
+                    <p>Start Date: {dateToString(job.start_date)}</p>
+                    <p>End Date: {dateToString(job.end_date)}</p>
                     <p>Freelancers Needed: {job.freelancers_needed}</p>
                 </div>
             </div> {/* box-top */}
