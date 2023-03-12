@@ -91,14 +91,18 @@ form {
   transform: translateX(-13px) translateY(-35px);
   font-size: 1em;
 }
-.new-job-form .inputbox [type="button"] {
-  width: 50%;
+.new-job-form .inputbox button {
+  width: 30%;
+  height: 2rem;
   background: var(--bright-pink);
   color: #fff;
   border: 2px solid #000;
+  border-radius: 10px;
+  font-size: 1em;
+  font-weight: bold;
 }
-.center .inputbox:hover [type="button"] {
-  background: linear-gradient(45deg, greenyellow, dodgerblue);
+.new-job-form .inputbox:hover button {
+  background: rgb(26, 159, 254);
 }
 
 /*end form*/
