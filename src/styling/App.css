@@ -496,14 +496,15 @@ a {
   color: inherit;
 }
 
-.wrap {
+.job-wrap {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
   align-items: stretch;
   width: 100%;
   gap: 24px;
-  padding: 1rem;
+  padding-right: 10rem;
+  padding-left: 10rem;
 }
 
 .job-box {
@@ -513,7 +514,7 @@ a {
   position: relative;
   padding: 24px;
   background: #fff;
-  max-width: 700px;
+  max-width: 500px;
   border: solid 2px black;
   border-radius: 0.35rem;
 }
@@ -554,11 +555,20 @@ a {
   align-items: center;
   text-align: center;
   margin-top: auto;
-  padding: 16px;
+  padding: 5px;
+  border-radius: 10px;
   color: #000;
   background: transparent;
-  box-shadow: 0px 0px 0px 1px black inset;
   transition: background 0.4s ease;
+}
+
+.job-buttons-container {
+  display: flex;
+  flex-direction:row;
+  justify-content: center;
+  padding: 5px;
+  margin: 5px;
+  gap: 2rem;
 }
 
 .delete-button:hover {
@@ -649,3 +659,45 @@ a {
 
 /* job card end */
 
+/*job page*/
+
+
+
+/* assign freelancer list */
+.assign-freelancer-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-basis: 100%;
+  position: relative;
+  padding: 1rem;
+  max-width: 500px;
+}
+
+.assign-freelancer-list-item {
+  padding: 1rem;
+  color: black;
+  font-size: 1em;
+}
+
+.assign-freelancer-list-item button {
+  font-family: 'Fontdiner Swanky', cursive;
+  font-weight: 100;
+  border: solid 2px black;
+  outline: 0;
+  padding: 5px;
+  margin-left: 10px;
+  font-size: .7rem;
+  letter-spacing: 0.08rem;
+  background-color: white;
+  border-radius: 0.35rem;
+  position: relative;
+  cursor: pointer;
+  background-color: var(--citron);
+}
+
+.freelancer-list-container {
+  border: solid 2px black;
+  border-radius: 0.35rem;
+  background-color: white;
+}

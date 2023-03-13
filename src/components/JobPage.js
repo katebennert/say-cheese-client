@@ -10,8 +10,6 @@ function JobPage({ freelancers, jobs, onUpdateFreelancerAfterDelete, availableFr
 
     const freelancersToUpdate = [];
 
-    console.log(availableFreelancers)
-
     useEffect(() => {
         fetch(`http://localhost:9292/jobs/${id}`)
             .then(r => r.json())
@@ -120,8 +118,8 @@ function JobPage({ freelancers, jobs, onUpdateFreelancerAfterDelete, availableFr
              </div>
          </div> 
          <div className="job-buttons-container">
-             <button onClick={handleAssignFreelancersClick}>Assign Freelancers</button>
-             <button onClick={handleDeleteClick}>Delete Job</button>
+             <button className="delete-button" onClick={handleAssignFreelancersClick}>Assign Freelancers</button>
+             <button className="delete-button" onClick={handleDeleteClick}>Delete Job</button>
          </div>
      </div> 
  </div>  
@@ -134,16 +132,21 @@ function JobPage({ freelancers, jobs, onUpdateFreelancerAfterDelete, availableFr
     )
 
     const freelancerList = (
-        <div className="job-box">{availableFreelancers.map(freelancer => (
-            <div className="assign-freelancer-list" key={freelancer.id}>
-                <div>{freelancer.name}</div>
-                <button onClick={handleAssignToJobClick} value={freelancer.id}>Assign to Job</button>
+        <div className="assign-freelancer-box">
+            <h3>Available Freelancers:</h3>
+            <div className="freelancer-list-container">
+                {availableFreelancers.map(freelancer => (
+                    <div className="assign-freelancer-list-item" key={freelancer.id}>
+                        <div>{freelancer.name} - {freelancer.freelancer_type}
+                            <button onClick={handleAssignToJobClick} value={freelancer.id}>Assign to Job</button>
+                        </div>
+                    </div>
+                ))}</div>
             </div>
-        ))}</div>
     )
 
     return (
-        <div className="wrap">
+        <div className="job-wrap">
             <div>{showRedirect ? redirectMessage : jobPageCard}</div>
             <div>{showFreelancerList ? freelancerList : null}</div>
         </div>

@@ -57,11 +57,7 @@ function App() {
   }
 
   function handleUpdateFreelancerAfterDelete(freelancersToUpdate) {
-
-    console.log(freelancersToUpdate)
-    // nestted loop to compare each thing against other things in the array will do it 
-
-    
+    setAvailableFreelancers([...availableFreelancers, ...freelancersToUpdate]);
   }
 
   function handleDeleteJob(deletedJob) {
