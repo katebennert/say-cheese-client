@@ -504,8 +504,7 @@ a {
   align-items: stretch;
   width: 100%;
   gap: 24px;
-  padding-right: 10rem;
-  padding-left: 10rem;
+  padding: 1rem;
 }
 
 .job-box {
