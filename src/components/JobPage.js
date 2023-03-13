@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-function JobPage({ freelancers, jobs, availableFreelancers, onUpdateFreelancer, onDeleteJob, onUpdateJob, dateToString }) {
+function JobPage({ freelancers, jobs, onUpdateFreelancerAfterDelete, availableFreelancers, onUpdateFreelancer, onDeleteJob, onUpdateJob, dateToString }) {
     const { id } = useParams();
     const [showRedirect, setShowRedirect] = useState(false);
     const [showFreelancerList, setShowFreelancerList] = useState(false);
     const [job, setJob] = useState({});
     const [freelancersOn, setFreelancersOn] = useState([]);
+
+    const freelancersToUpdate = [];
+
+    console.log(availableFreelancers)
 
     useEffect(() => {
         fetch(`http://localhost:9292/jobs/${id}`)
@@ -18,7 +22,6 @@ function JobPage({ freelancers, jobs, availableFreelancers, onUpdateFreelancer, 
     }, [id]);
 
     function handleDeleteClick() {
-       // UnCOMMENT FOR REAL DELETE
         fetch(`http://localhost:9292/jobs/${id}`, {
           method: "DELETE",
         })
@@ -28,28 +31,34 @@ function JobPage({ freelancers, jobs, availableFreelancers, onUpdateFreelancer, 
                 setShowRedirect(true);
                 setShowFreelancerList(false);
 
-                // will need to be wrapped in if for if there is zero?
-                // data.freelancers.forEach(freelancer => {
-                //     fetch(`http://localhost:9292/freelancers/${freelancer.id}`, {
-                //         method: "PATCH",
-                //         headers: {
-                //             "Content-Type": "application/json",
-                //         },
-                //         body: JSON.stringify({
-                //             is_available: true,
-                //             job_id: null
-                //         }),
-                //     })
-                //         .then(r => r.json())
-                //         .then(updatedFreelancer => {
-                //             console.log(updatedFreelancer)
-                //         })
-                // })
+                if (deletedJob.freelancers[0]) {
+                    deletedJob.freelancers.forEach(freelancer => {
+                        fetch(`http://localhost:9292/freelancers/${freelancer.id}`, {
+                            method: "PATCH",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                is_available: true,
+                                job_id: null
+                            }),
+                        })
+                            .then(r => r.json())
+                            .then(updatedFreelancer => {
+                                freelancersToUpdate.push(updatedFreelancer);
+                                onUpdateFreelancerAfterDelete(freelancersToUpdate);
+                            })
+                    })
+                }
             })
     }
 
     function handleAssignFreelancersClick() {
-        setShowFreelancerList(true);
+        if (availableFreelancers[0]) {
+            setShowFreelancerList(true);
+        } else {
+            alert("There are no more available freelancers. Check again later!")
+        }
     }
 
     function handleAssignToJobClick(e) {

@@ -12,12 +12,14 @@ function App() {
 
   const [freelancers, setFreelancers] = useState([]);
   const [jobs, setJobs] = useState([]);
+  const [availableFreelancers, setAvailableFreelancers] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:9292/freelancers")
       .then(r => r.json())
       .then(freelancers => {
-        setFreelancers(freelancers)
+        setFreelancers(freelancers);
+        setAvailableFreelancers(freelancers.filter(freelancer => freelancer.is_available));
       });
   }, []);
 
@@ -41,19 +43,29 @@ function App() {
       return [year, month, day].join('-');
   }
 
-    function handleUpdateFreelancer(updatedFreelancer) {
-    const updatedFreelancers = freelancers.map((freelancer) => {
+  function handleUpdateFreelancer(updatedFreelancer) {
+
+    const updatedFreelancers = freelancers.map(freelancer => {
       if (freelancer.id === updatedFreelancer.id) {
         return updatedFreelancer;
       } else {
-        return freelancer;
+        return freelancer
       }
-    });
-    setFreelancers(updatedFreelancers);
+    })
+      setFreelancers(updatedFreelancers);
+      setAvailableFreelancers(updatedFreelancers.filter(freelancer => freelancer.is_available));
+  }
+
+  function handleUpdateFreelancerAfterDelete(freelancersToUpdate) {
+
+    console.log(freelancersToUpdate)
+    // nestted loop to compare each thing against other things in the array will do it 
+
+    
   }
 
   function handleDeleteJob(deletedJob) {
-    setJobs(jobs.filter(job => job.id === deletedJob.id));
+    setJobs(jobs.filter(job => job.id !== deletedJob.id));
   }
 
   function handleUpdateJob(updatedJob) {
@@ -71,8 +83,6 @@ function App() {
     setJobs([...jobs, newJob]);
   }
 
-  const availableFreelancers = freelancers.filter(freelancer => freelancer.is_available);
-
   return (
     <div className='App'>
       <NavBar />
@@ -81,7 +91,7 @@ function App() {
           <JobList jobs={jobs} dateToString={dateToString}/>
         </Route>
         <Route path="/jobs/:id">
-          <JobPage freelancers={freelancers} jobs={jobs} availableFreelancers={availableFreelancers} onDeleteJob={handleDeleteJob} onUpdateFreelancer={handleUpdateFreelancer} onUpdateJob={handleUpdateJob} dateToString={dateToString}/>
+          <JobPage freelancers={freelancers} jobs={jobs} availableFreelancers={availableFreelancers} onDeleteJob={handleDeleteJob} onUpdateFreelancer={handleUpdateFreelancer} onUpdateFreelancerAfterDelete={handleUpdateFreelancerAfterDelete} onUpdateJob={handleUpdateJob} dateToString={dateToString}/>
         </Route>
         <Route path="/freelancers">
           <FreelancerList freelancers={freelancers} />
