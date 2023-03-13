@@ -361,11 +361,12 @@ a {
   padding: 16px;
   color: #000;
   background: var(--citron);
-  box-shadow: 0px 0px 0px 1px black inset;
-  transition: background 0.4s ease;
+  border: solid 2px black;
+  border-radius: 0.35rem;
+
 }
 
-.freelancer-button-red {
+/* .freelancer-button-red {
   display: block;
   justify-content: center;
   align-items: center;
@@ -376,7 +377,7 @@ a {
   background: var(--bright-pink);
   box-shadow: 0px 0px 0px 1px black inset;
   transition: background 0.4s ease;
-}
+} */
 
 .button:hover {
   background: var(--bright-pink);
@@ -581,6 +582,19 @@ a {
 
 .fill-two {
   background: white;
+}
+
+.job-button {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: auto;
+  padding: 16px;
+  color: #000;
+  background: var(--citron);
+  border: solid 2px black;
+  border-radius: 0.35rem;
 }
 
 /* RESPONSIVE QUERIES */

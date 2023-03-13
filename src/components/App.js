@@ -90,7 +90,7 @@ function App() {
           <JobPage freelancers={freelancers} jobs={jobs} availableFreelancers={availableFreelancers} onDeleteJob={handleDeleteJob} onUpdateFreelancer={handleUpdateFreelancer} onUpdateFreelancerAfterDelete={handleUpdateFreelancerAfterDelete} onUpdateJob={handleUpdateJob} dateToString={dateToString}/>
         </Route>
         <Route path="/freelancers">
-          <FreelancerList freelancers={freelancers} />
+          <FreelancerList freelancers={freelancers} availableFreelancers={availableFreelancers}/>
         </Route>
         <Route path="/create-job">
           <CreateJob onCreateNewJob={handleCreateNewJob} />
