@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-function JobPage({ freelancers, jobs, onUpdateFreelancerAfterDelete, availableFreelancers, onUpdateFreelancer, onDeleteJob, onUpdateJob, dateToString }) {
+function JobPage({ onUpdateFreelancerAfterDelete, availableFreelancers, onUpdateFreelancer, onDeleteJob, onUpdateJob, dateToString }) {
     const { id } = useParams();
     const [showRedirect, setShowRedirect] = useState(false);
     const [showFreelancerList, setShowFreelancerList] = useState(false);

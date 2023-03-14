@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import JobList from './JobList';
 import FreelancerList from './FreelancerList';
 import CreateJob from './CreateJob';
+import CreateFreelancer from './CreateFreelancer';
 import NavBar from './NavBar';
 import Home from './Home';
 import JobPage from './JobPage';
@@ -79,6 +80,11 @@ function App() {
     setJobs([...jobs, newJob]);
   }
 
+  function handleCreateNewFreelancer(newFreelancer) {
+    setFreelancers([...freelancers, newFreelancer]);
+    setAvailableFreelancers([...freelancers, newFreelancer].filter(freelancer => freelancer.is_available));
+  }
+
   return (
     <div className='App'>
       <NavBar />
@@ -94,6 +100,9 @@ function App() {
         </Route>
         <Route path="/create-job">
           <CreateJob onCreateNewJob={handleCreateNewJob} />
+        </Route>
+        <Route path="/create-freelancer">
+          <CreateFreelancer onCreateNewFreelancer={handleCreateNewFreelancer} />
         </Route>
         <Route exact path="/">
           <Home />
