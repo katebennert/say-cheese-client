@@ -29,25 +29,25 @@ function JobPage({ onUpdateFreelancerAfterDelete, availableFreelancers, onUpdate
                 setShowRedirect(true);
                 setShowFreelancerList(false);
 
-                if (deletedJob.freelancers[0]) {
-                    deletedJob.freelancers.forEach(freelancer => {
-                        fetch(`http://localhost:9292/freelancers/${freelancer.id}`, {
-                            method: "PATCH",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({
-                                is_available: true,
-                                job_id: null
-                            }),
-                        })
-                            .then(r => r.json())
-                            .then(updatedFreelancer => {
-                                freelancersToUpdate.push(updatedFreelancer);
-                                onUpdateFreelancerAfterDelete(freelancersToUpdate);
-                            })
-                    })
-                }
+                // if (deletedJob.freelancers[0]) {
+                //     deletedJob.freelancers.forEach(freelancer => {
+                //         fetch(`http://localhost:9292/freelancers/${freelancer.id}`, {
+                //             method: "PATCH",
+                //             headers: {
+                //                 "Content-Type": "application/json",
+                //             },
+                //             body: JSON.stringify({
+                //                 is_available: true,
+                //                 job_id: null
+                //             }),
+                //         })
+                //             .then(r => r.json())
+                //             .then(updatedFreelancer => {
+                //                 freelancersToUpdate.push(updatedFreelancer);
+                //                 onUpdateFreelancerAfterDelete(freelancersToUpdate);
+                //             })
+                //     })
+                // }
             })
     }
 

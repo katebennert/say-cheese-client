@@ -57,6 +57,10 @@ function App() {
       setAvailableFreelancers(updatedFreelancers.filter(freelancer => freelancer.is_available));
   }
 
+  function handleUpdateFreelancerSave(updatedFreelancer) {
+    setFreelancers(freelancers.map(freelancer => freelancer.id === updatedFreelancer.id ? updatedFreelancer : freelancer))
+  }
+
   function handleUpdateFreelancerAfterDelete(freelancersToUpdate) {
     setAvailableFreelancers([...availableFreelancers, ...freelancersToUpdate]);
   }
@@ -96,7 +100,7 @@ function App() {
           <JobPage freelancers={freelancers} jobs={jobs} availableFreelancers={availableFreelancers} onDeleteJob={handleDeleteJob} onUpdateFreelancer={handleUpdateFreelancer} onUpdateFreelancerAfterDelete={handleUpdateFreelancerAfterDelete} onUpdateJob={handleUpdateJob} dateToString={dateToString}/>
         </Route>
         <Route path="/freelancers">
-          <FreelancerList freelancers={freelancers} availableFreelancers={availableFreelancers}/>
+          <FreelancerList freelancers={freelancers} availableFreelancers={availableFreelancers} onUpdateFreelancerSave={handleUpdateFreelancerSave}/>
         </Route>
         <Route path="/create-job">
           <CreateJob onCreateNewJob={handleCreateNewJob} />
