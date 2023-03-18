@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function JobPage({ freelancers, onUpdateFreelancer, onDeleteJob, dateToString }) {
     const { id } = useParams();
-    const [showRedirect, setShowRedirect] = useState(false);
-    const [showFreelancerList, setShowFreelancerList] = useState(false);
+    const history = useHistory();
     const [job, setJob] = useState({});
+    const [showFreelancerList, setShowFreelancerList] = useState(false);
     const [freelancersOn, setFreelancersOn] = useState([]);
     const [freelancersNeeded, setFreelancersNeeded] = useState(null);
 
@@ -28,8 +29,7 @@ function JobPage({ freelancers, onUpdateFreelancer, onDeleteJob, dateToString })
             .then(r => r.json())
             .then(deletedJob => {
                 onDeleteJob(deletedJob, freelancersOn);
-                setShowRedirect(true);
-                setShowFreelancerList(false);
+                history.push("/jobs");
                 //update state of freelancers
             })
     }
@@ -91,12 +91,6 @@ function JobPage({ freelancers, onUpdateFreelancer, onDeleteJob, dateToString })
  </div>  
     )
 
-    const redirectMessage = (
-        <div className="message">
-            <h2>This job has been deleted! 🙅‍♀️ Go browse for other jobs.</h2>
-        </div>
-    )
-
     const availableFreelancers = freelancers.filter(f => f.is_available);
 
     const freelancerList = (
@@ -115,7 +109,7 @@ function JobPage({ freelancers, onUpdateFreelancer, onDeleteJob, dateToString })
 
     return (
         <div className="job-wrap">
-            <div>{showRedirect ? redirectMessage : jobPageCard}</div>
+            <div>{jobPageCard}</div>
             <div>{showFreelancerList ? freelancerList : null}</div>
         </div>
     );
