@@ -6,7 +6,6 @@ function UpdateFreelancer({ freelancer, onUpdateFreelancerSave, setIsUpdating })
 
     function handleUpdateSubmit(e) {
         e.preventDefault();
-        console.log(updatedFreelancer);
         
         fetch(`http://localhost:9292/freelancers/${freelancer.id}`, {
                 method: "PATCH",

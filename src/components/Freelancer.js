@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import UpdateFreelancer from "./UpdateFreelancer";
 
-function Freelancer({ freelancer, availableFreelancers, onUpdateFreelancerSave }) {
+function Freelancer({ freelancer, availableFreelancers, onUpdateFreelancerSave, jobs }) {
 
   const [isUpdating, setIsUpdating] = useState(false);
 
   function handleUpdateStatusClick() {
     setIsUpdating(true)
   }
+
+  //console.log(jobs.find(job => job.id === freelancer.job_id))
+  console.log(freelancer)
   
   return (
     <div className="freelancer-card">
@@ -20,6 +23,7 @@ function Freelancer({ freelancer, availableFreelancers, onUpdateFreelancerSave }
                     <p className="user-follow-info">{freelancer.freelancer_type}</p>
                 </div> 
                 <p className="description">{freelancer.bio}</p>
+                <p>{freelancer.name}'s Current Project: </p>
             </div> 
             <button onClick={handleUpdateStatusClick} className="freelancer-button-green">Update {freelancer.name}'s Profile</button>
         </div> 

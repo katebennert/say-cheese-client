@@ -9,6 +9,9 @@ import NavBar from './NavBar';
 import Home from './Home';
 import JobPage from './JobPage';
 
+// useContext and restructure so that i dont have to make a fetch to the :id
+// need to fix state of job for view job
+
 function App() {
 
   const [freelancers, setFreelancers] = useState([]);
@@ -23,6 +26,8 @@ function App() {
         setAvailableFreelancers(freelancers.filter(freelancer => freelancer.is_available));
       });
   }, []);
+ // [...oldArray, newItem]
+ // {...oldJob, freelancers: [...oldJob.freelancers, newFreelancer], happy: true}
 
   useEffect(() => {
     fetch("http://localhost:9292/jobs")
@@ -30,7 +35,7 @@ function App() {
       .then(jobData => setJobs(jobData));
     }, []);
 
-    function dateToString(date) {
+  function dateToString(date) {
       let d = new Date(date),
           month = '' + (d.getMonth() + 1),
           day = '' + d.getDate(),
@@ -43,6 +48,10 @@ function App() {
 
       return [year, month, day].join('-');
   }
+
+  // function handleJobShowClick(job) {
+  //   setJob(job);
+  // }
 
   function handleUpdateFreelancer(updatedFreelancer) {
 
@@ -94,13 +103,13 @@ function App() {
       <NavBar />
       <Switch>
         <Route exact path="/jobs">
-          <JobList jobs={jobs} dateToString={dateToString}/>
+          <JobList jobs={jobs} dateToString={dateToString} />
         </Route>
         <Route path="/jobs/:id">
-          <JobPage freelancers={freelancers} jobs={jobs} availableFreelancers={availableFreelancers} onDeleteJob={handleDeleteJob} onUpdateFreelancer={handleUpdateFreelancer} onUpdateFreelancerAfterDelete={handleUpdateFreelancerAfterDelete} onUpdateJob={handleUpdateJob} dateToString={dateToString}/>
+          <JobPage freelancers={freelancers} jobs={jobs} availableFreelancers={availableFreelancers} onDeleteJob={handleDeleteJob} onUpdateFreelancer={handleUpdateFreelancer} onUpdateFreelancerAfterDelete={handleUpdateFreelancerAfterDelete} onUpdateJob={handleUpdateJob} dateToString={dateToString} />
         </Route>
         <Route path="/freelancers">
-          <FreelancerList freelancers={freelancers} availableFreelancers={availableFreelancers} onUpdateFreelancerSave={handleUpdateFreelancerSave}/>
+          <FreelancerList freelancers={freelancers} availableFreelancers={availableFreelancers} onUpdateFreelancerSave={handleUpdateFreelancerSave} jobs={jobs}/>
         </Route>
         <Route path="/create-job">
           <CreateJob onCreateNewJob={handleCreateNewJob} />

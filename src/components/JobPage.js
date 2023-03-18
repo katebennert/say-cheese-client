@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-function JobPage({ onUpdateFreelancerAfterDelete, availableFreelancers, onUpdateFreelancer, onDeleteJob, onUpdateJob, dateToString }) {
+function JobPage({ freelancers, availableFreelancers, onUpdateFreelancer, onDeleteJob, onUpdateJob, dateToString }) {
     const { id } = useParams();
     const [showRedirect, setShowRedirect] = useState(false);
     const [showFreelancerList, setShowFreelancerList] = useState(false);
     const [job, setJob] = useState({});
     const [freelancersOn, setFreelancersOn] = useState([]);
 
-    const freelancersToUpdate = [];
+
+    // how do i fix the fact that when i refresh is passes down the state of job as {} (without another fetch)?
 
     useEffect(() => {
         fetch(`http://localhost:9292/jobs/${id}`)
-            .then(r => r.json())
-            .then(jobData => {
-                setJob(jobData);
-                setFreelancersOn(jobData.freelancers.map(freelancer => freelancer.name));
-            })
-    }, [id]);
+          .then(r => r.json())
+          .then(jobData => {
+            setJob(jobData);
+            setFreelancersOn(jobData.freelancers)
+          });
+      }, [id]);
 
     function handleDeleteClick() {
         fetch(`http://localhost:9292/jobs/${id}`, {
@@ -29,25 +30,8 @@ function JobPage({ onUpdateFreelancerAfterDelete, availableFreelancers, onUpdate
                 setShowRedirect(true);
                 setShowFreelancerList(false);
 
-                // if (deletedJob.freelancers[0]) {
-                //     deletedJob.freelancers.forEach(freelancer => {
-                //         fetch(`http://localhost:9292/freelancers/${freelancer.id}`, {
-                //             method: "PATCH",
-                //             headers: {
-                //                 "Content-Type": "application/json",
-                //             },
-                //             body: JSON.stringify({
-                //                 is_available: true,
-                //                 job_id: null
-                //             }),
-                //         })
-                //             .then(r => r.json())
-                //             .then(updatedFreelancer => {
-                //                 freelancersToUpdate.push(updatedFreelancer);
-                //                 onUpdateFreelancerAfterDelete(freelancersToUpdate);
-                //             })
-                //     })
-                // }
+                // is there a way to reset an attribute of an association using active record instead of a patch request?
+
             })
     }
 
@@ -60,39 +44,25 @@ function JobPage({ onUpdateFreelancerAfterDelete, availableFreelancers, onUpdate
     }
 
     function handleAssignToJobClick(e) {
-        const freelancerId = e.target.value;
+       const freelancerID = e.target.value;
+       const freelancerToAssign = freelancers.find(f => f.id === Number(freelancerID));
 
-        if (!job.is_full) {
-            fetch(`http://localhost:9292/freelancers/${freelancerId}`, {
+        if (job.freelancers_required - job.freelancers.length > 0) {
+            fetch(`http://localhost:9292/freelancers/${freelancerID}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    is_available: false,
-                    job_id: job.id
+                    ...freelancerToAssign,
+                    job_id: job.id,
+                    is_available: false
                 }),
             })
                 .then(r => r.json())
-                .then(updatedFreelancer => {
-                    onUpdateFreelancer(updatedFreelancer)
-                    setFreelancersOn([...freelancersOn, updatedFreelancer.name])
-                })
-
-            fetch(`http://localhost:9292/jobs/${job.id}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    is_full: job.freelancers_needed - 1 === 0 ? true : false,
-                    freelancers_needed: job.freelancers_needed - 1
-                }),
-            })
-                .then(r => r.json())
-                .then(updatedJob => {
-                    onUpdateJob(updatedJob);
-                    setJob(updatedJob);
+                .then(data => {
+                    onUpdateFreelancer(data);
+                    console.log(job)
                 })
         } else {
             alert("This job is full!")
@@ -112,9 +82,9 @@ function JobPage({ onUpdateFreelancerAfterDelete, availableFreelancers, onUpdate
              <div className="job-info">
                  <p>Start Date: {dateToString(job.start_date)}</p>
                  <p>End Date: {dateToString(job.end_date)}</p>
-                 <p>Freelancers Needed: {job.freelancers_needed}</p>
-                 <p>Freelancers On This Project: {freelancersOn === [] ? "" : freelancersOn.join(", ")}</p>
-                 <p>{job.is_full ? "FULL" : "HIRING"}!</p>
+                 <p>Freelancers Needed: {job.freelancers_required - freelancersOn.length}</p>
+                 <p>Freelancers On This Project: {freelancersOn.map(f => f.name).join(", ")}</p>
+                 <p>{job.freelancers_required - freelancersOn.length === 0 ? "FULL" : "HIRING"}!</p>
              </div>
          </div> 
          <div className="job-buttons-container">
