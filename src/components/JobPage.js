@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-function JobPage({ freelancers, availableFreelancers, onUpdateFreelancer, onDeleteJob, onUpdateJob, dateToString }) {
+function JobPage({ freelancers, onUpdateFreelancer, onDeleteJob, dateToString }) {
     const { id } = useParams();
     const [showRedirect, setShowRedirect] = useState(false);
     const [showFreelancerList, setShowFreelancerList] = useState(false);
     const [job, setJob] = useState({});
     const [freelancersOn, setFreelancersOn] = useState([]);
-
+    const [freelancersNeeded, setFreelancersNeeded] = useState(null);
 
     // how do i fix the fact that when i refresh is passes down the state of job as {} (without another fetch)?
 
@@ -16,7 +16,8 @@ function JobPage({ freelancers, availableFreelancers, onUpdateFreelancer, onDele
           .then(r => r.json())
           .then(jobData => {
             setJob(jobData);
-            setFreelancersOn(jobData.freelancers)
+            setFreelancersOn(jobData.freelancers);
+            setFreelancersNeeded(jobData.freelancers_required - jobData.freelancers.length);
           });
       }, [id]);
 
@@ -26,28 +27,22 @@ function JobPage({ freelancers, availableFreelancers, onUpdateFreelancer, onDele
         })
             .then(r => r.json())
             .then(deletedJob => {
-                onDeleteJob(deletedJob);
+                onDeleteJob(deletedJob, freelancersOn);
                 setShowRedirect(true);
                 setShowFreelancerList(false);
-
-                // is there a way to reset an attribute of an association using active record instead of a patch request?
-
+                //update state of freelancers
             })
     }
 
     function handleAssignFreelancersClick() {
-        if (availableFreelancers[0]) {
-            setShowFreelancerList(true);
-        } else {
-            alert("There are no more available freelancers. Check again later!")
-        }
+        setShowFreelancerList(true);
     }
 
     function handleAssignToJobClick(e) {
        const freelancerID = e.target.value;
        const freelancerToAssign = freelancers.find(f => f.id === Number(freelancerID));
 
-        if (job.freelancers_required - job.freelancers.length > 0) {
+        if (job.freelancers_required - freelancersOn.length > 0) {
             fetch(`http://localhost:9292/freelancers/${freelancerID}`, {
                 method: "PATCH",
                 headers: {
@@ -60,9 +55,10 @@ function JobPage({ freelancers, availableFreelancers, onUpdateFreelancer, onDele
                 }),
             })
                 .then(r => r.json())
-                .then(data => {
-                    onUpdateFreelancer(data);
-                    console.log(job)
+                .then(freelancerData => {
+                    onUpdateFreelancer(freelancerData);
+                    setFreelancersOn([...freelancersOn, freelancerData]);
+                    setFreelancersNeeded(freelancersNeeded - 1);
                 })
         } else {
             alert("This job is full!")
@@ -82,7 +78,7 @@ function JobPage({ freelancers, availableFreelancers, onUpdateFreelancer, onDele
              <div className="job-info">
                  <p>Start Date: {dateToString(job.start_date)}</p>
                  <p>End Date: {dateToString(job.end_date)}</p>
-                 <p>Freelancers Needed: {job.freelancers_required - freelancersOn.length}</p>
+                 <p>Freelancers Needed: {freelancersNeeded}</p>
                  <p>Freelancers On This Project: {freelancersOn.map(f => f.name).join(", ")}</p>
                  <p>{job.freelancers_required - freelancersOn.length === 0 ? "FULL" : "HIRING"}!</p>
              </div>
@@ -100,6 +96,8 @@ function JobPage({ freelancers, availableFreelancers, onUpdateFreelancer, onDele
             <h2>This job has been deleted! 🙅‍♀️ Go browse for other jobs.</h2>
         </div>
     )
+
+    const availableFreelancers = freelancers.filter(f => f.is_available);
 
     const freelancerList = (
         <div className="assign-freelancer-box">

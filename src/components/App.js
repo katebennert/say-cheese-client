@@ -16,14 +16,12 @@ function App() {
 
   const [freelancers, setFreelancers] = useState([]);
   const [jobs, setJobs] = useState([]);
-  const [availableFreelancers, setAvailableFreelancers] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:9292/freelancers")
       .then(r => r.json())
       .then(freelancers => {
         setFreelancers(freelancers);
-        setAvailableFreelancers(freelancers.filter(freelancer => freelancer.is_available));
       });
   }, []);
  // [...oldArray, newItem]
@@ -63,19 +61,21 @@ function App() {
       }
     })
       setFreelancers(updatedFreelancers);
-      setAvailableFreelancers(updatedFreelancers.filter(freelancer => freelancer.is_available));
   }
 
   function handleUpdateFreelancerSave(updatedFreelancer) {
     setFreelancers(freelancers.map(freelancer => freelancer.id === updatedFreelancer.id ? updatedFreelancer : freelancer))
   }
 
-  function handleUpdateFreelancerAfterDelete(freelancersToUpdate) {
-    setAvailableFreelancers([...availableFreelancers, ...freelancersToUpdate]);
-  }
-
-  function handleDeleteJob(deletedJob) {
+  function handleDeleteJob(deletedJob, freelancersToUpdate) {
     setJobs(jobs.filter(job => job.id !== deletedJob.id));
+
+    const updatedFreelancers = freelancersToUpdate.map(f => (
+      {...f, is_available: true}
+    ));
+
+    //this is imperfect (what is the best way to do this???)
+   setFreelancers([...freelancers, ...updatedFreelancers]);
   }
 
   function handleUpdateJob(updatedJob) {
@@ -95,7 +95,7 @@ function App() {
 
   function handleCreateNewFreelancer(newFreelancer) {
     setFreelancers([...freelancers, newFreelancer]);
-    setAvailableFreelancers([...freelancers, newFreelancer].filter(freelancer => freelancer.is_available));
+    //setAvailableFreelancers([...freelancers, newFreelancer].filter(freelancer => freelancer.is_available));
   }
 
   return (
@@ -106,10 +106,10 @@ function App() {
           <JobList jobs={jobs} dateToString={dateToString} />
         </Route>
         <Route path="/jobs/:id">
-          <JobPage freelancers={freelancers} jobs={jobs} availableFreelancers={availableFreelancers} onDeleteJob={handleDeleteJob} onUpdateFreelancer={handleUpdateFreelancer} onUpdateFreelancerAfterDelete={handleUpdateFreelancerAfterDelete} onUpdateJob={handleUpdateJob} dateToString={dateToString} />
+          <JobPage freelancers={freelancers} jobs={jobs} onDeleteJob={handleDeleteJob} onUpdateFreelancer={handleUpdateFreelancer} onUpdateJob={handleUpdateJob} dateToString={dateToString} />
         </Route>
         <Route path="/freelancers">
-          <FreelancerList freelancers={freelancers} availableFreelancers={availableFreelancers} onUpdateFreelancerSave={handleUpdateFreelancerSave} jobs={jobs}/>
+          <FreelancerList freelancers={freelancers} onUpdateFreelancerSave={handleUpdateFreelancerSave} jobs={jobs}/>
         </Route>
         <Route path="/create-job">
           <CreateJob onCreateNewJob={handleCreateNewJob} />
