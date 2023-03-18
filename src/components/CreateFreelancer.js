@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 function CreateFreelancer({ onCreateNewFreelancer }) {
 
-    const [showCreateFreelancerMessage, setShowCreateFreelancerMessage] = useState(false);
+    const history = useHistory();
     const [newFreelancer, setNewFreelancer] = useState({
         name: "",
         email: "",
@@ -35,16 +36,9 @@ function CreateFreelancer({ onCreateNewFreelancer }) {
             .then(r => r.json())
             .then(newFreelancerData => {
                 onCreateNewFreelancer(newFreelancerData)
-                setShowCreateFreelancerMessage(true);
+                history.push("/freelancers");
             });
     }
-   
-
-    const createFreelancerMessage = (
-        <div>
-            <h2>Freelancer "{newFreelancer.name}" added! Go to browse freelancers.</h2>
-        </div>
-    )
 
     const newFreelancerForm = (
         <div className="new-job-form">
@@ -112,7 +106,7 @@ function CreateFreelancer({ onCreateNewFreelancer }) {
     )
 
   return (
-    <>{showCreateFreelancerMessage ? createFreelancerMessage : newFreelancerForm}</>
+    <>{newFreelancerForm}</>
     )
 }
 

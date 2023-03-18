@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
-function Job({ job, dateToString, onJobShowClick }) {
+function Job({ job, dateToString }) {
 
   return (
     <div className="job-card-container">
@@ -16,7 +16,7 @@ function Job({ job, dateToString, onJobShowClick }) {
                     <div className="job-info">
                         <p>Start Date: {dateToString(job.start_date)}</p>
                         <p>End Date: {dateToString(job.end_date)}</p>
-                        <p>Freelancers Needed: {job.freelancers_required}</p>
+                        <p>Freelancers Required on Job: {job.freelancers_required}</p>
                     </div>
                 </div> {/* box-top */}
                 <div className="job-buttons-container">

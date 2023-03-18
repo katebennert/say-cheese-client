@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 function CreateJob({ onCreateNewJob }) {
 
-    const [showCreateMessage, setShowCreateMessage] = useState(false);
+    const history = useHistory();
     const [newJob, setNewJob] = useState({
         name: "",
         company: "",
@@ -10,9 +11,7 @@ function CreateJob({ onCreateNewJob }) {
         start_date: "",
         end_date: "",
         description: "",
-        freelancers_needed: 1,
-        is_open: true,
-        is_full: false
+        freelancers_required: ""
     });
 
     function handleChange(e) {
@@ -42,16 +41,9 @@ function CreateJob({ onCreateNewJob }) {
             .then(r => r.json())
             .then(newJobData => {
                 onCreateNewJob(newJobData)
-                setShowCreateMessage(true);
+                history.push("/jobs")
             });
     }
-   
-
-    const createMessage = (
-        <div>
-            <h2>Job "{newJob.name}" created! Go to browse jobs.</h2>
-        </div>
-    )
 
     const newJobForm = (
         <div className="new-job-form">
@@ -123,9 +115,9 @@ function CreateJob({ onCreateNewJob }) {
                     required="required"
                 />
             </div>
-            <label>Freelancers Needed</label>
+            <label>Freelancers Required</label>
             <div className="inputbox-fixed">
-                <select name="freelancers_needed" onChange={handleChange} value={newJob.freelancers_needed}>
+                <select name="freelancers_required" onChange={handleChange} value={newJob.freelancers_required}>
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -146,7 +138,7 @@ function CreateJob({ onCreateNewJob }) {
     )
 
   return (
-    <>{showCreateMessage ? createMessage : newJobForm}</>
+    <>{newJobForm}</>
     )
 }
 

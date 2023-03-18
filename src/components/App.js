@@ -9,8 +9,10 @@ import NavBar from './NavBar';
 import Home from './Home';
 import JobPage from './JobPage';
 
-// useContext and restructure so that i dont have to make a fetch to the :id
-// need to fix state of job for view job
+// will useContext solve the problem of having to fetch in the jobPage? i put the fetch back in because using state resulted in empty array being passed down on refresh
+// how to update freelancers state with multiple array elements?
+// generally how to pass down state in such a way that routes dont have empty arrays/objects when you reload them? this happens with jobs which affects trying to work with nested data 
+// add delete to freelancer
 
 function App() {
 
@@ -24,8 +26,6 @@ function App() {
         setFreelancers(freelancers);
       });
   }, []);
- // [...oldArray, newItem]
- // {...oldJob, freelancers: [...oldJob.freelancers, newFreelancer], happy: true}
 
   useEffect(() => {
     fetch("http://localhost:9292/jobs")
@@ -46,10 +46,6 @@ function App() {
 
       return [year, month, day].join('-');
   }
-
-  // function handleJobShowClick(job) {
-  //   setJob(job);
-  // }
 
   function handleUpdateFreelancer(updatedFreelancer) {
 
@@ -74,8 +70,8 @@ function App() {
       {...f, is_available: true}
     ));
 
-    //this is imperfect (what is the best way to do this???)
-   setFreelancers([...freelancers, ...updatedFreelancers]);
+    // can i update freelancers here?
+
   }
 
   function handleUpdateJob(updatedJob) {
@@ -95,7 +91,6 @@ function App() {
 
   function handleCreateNewFreelancer(newFreelancer) {
     setFreelancers([...freelancers, newFreelancer]);
-    //setAvailableFreelancers([...freelancers, newFreelancer].filter(freelancer => freelancer.is_available));
   }
 
   return (
