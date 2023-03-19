@@ -9,9 +9,16 @@ import NavBar from './NavBar';
 import Home from './Home';
 import JobPage from './JobPage';
 
+// QUESTIONS:
 // will useContext solve the problem of having to fetch in the jobPage? i put the fetch back in because using state resulted in empty array being passed down on refresh
-// how to update freelancers state with multiple array elements?
 // generally how to pass down state in such a way that routes dont have empty arrays/objects when you reload them? this happens with jobs which affects trying to work with nested data 
+// after state fixes (above) fix freelancer available badge in freelancer, job name in freelancer.
+
+// BONUS QUESTIONS (can fulfil requirements with freelancer delete)
+// how to update freelancers state with multiple array elements after DELETE? This will fix available freelancer list (server side is good)
+// can also solve the above problem by making 2 patch requests but not sure if that's the best way
+
+// TO DO:
 // add delete to freelancer
 
 function App() {
@@ -66,11 +73,11 @@ function App() {
   function handleDeleteJob(deletedJob, freelancersToUpdate) {
     setJobs(jobs.filter(job => job.id !== deletedJob.id));
 
-    const updatedFreelancers = freelancersToUpdate.map(f => (
-      {...f, is_available: true}
-    ));
+    // const updatedFreelancers = freelancersToUpdate.map(f => (
+    //   {...f, is_available: true}
+    // ));
 
-    // can i update freelancers here?
+    // update freelancers here (either figure out the array thing or two patches)
 
   }
 
