@@ -21,6 +21,8 @@ function JobPage({ freelancers, jobs, freelancersAvailable, onUpdateFreelancer, 
     useEffect(() => {
         const currentJob = jobs.find(j => j.id === parseInt(id));
         setJob(currentJob);
+        setFreelancersOn(currentJob.freelancers);
+        setFreelancersNeeded(currentJob.freelancers_required - currentJob.freelancers.length)
     }, [jobs]);
 
     const handleDeleteClick = () => {
