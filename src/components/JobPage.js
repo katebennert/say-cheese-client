@@ -2,25 +2,27 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
-function JobPage({ freelancers, freelancersAvailable, onUpdateFreelancer, onDeleteJob, dateToString }) {
+function JobPage({ freelancers, job, freelancersAvailable, onUpdateFreelancer, onDeleteJob, dateToString }) {
     const { id } = useParams();
     const history = useHistory();
-    const [job, setJob] = useState({});
+    // const [job, setJob] = useState([]);
     const [showFreelancerList, setShowFreelancerList] = useState(false);
     const [freelancersOn, setFreelancersOn] = useState([]);
     const [freelancersNeeded, setFreelancersNeeded] = useState(null);
 
-    // how do i fix the fact that when i refresh is passes down the state of job as {} (without another fetch)?
+    // how do i fix the fact that when i refresh is passes down the state of job as [] (without another fetch)? (logically this is because state of job hasn't been set yet but how else are you supposed to get that info if not from clicking "view job page")
 
-    useEffect(() => {
-        fetch(`http://localhost:9292/jobs/${id}`)
-          .then(r => r.json())
-          .then(jobData => {
-            setJob(jobData);
-            setFreelancersOn(jobData.freelancers);
-            setFreelancersNeeded(jobData.freelancers_required - jobData.freelancers.length);
-          });
-      }, [id]);
+    // useEffect(() => {
+    //     fetch(`http://localhost:9292/jobs/${id}`)
+    //       .then(r => r.json())
+    //       .then(jobData => {
+    //         setJob(jobData);
+    //         setFreelancersOn(jobData.freelancers);
+    //         setFreelancersNeeded(jobData.freelancers_required - jobData.freelancers.length);
+    //       });
+    //   }, [id]);
+
+    console.log(job);
 
     function handleDeleteClick() {
         fetch(`http://localhost:9292/jobs/${id}`, {

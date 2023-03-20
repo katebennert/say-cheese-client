@@ -10,21 +10,23 @@ import Home from './Home';
 import JobPage from './JobPage';
 
 // QUESTIONS:
-// will useContext solve the problem of having to fetch in the jobPage? i put the fetch back in because using state resulted in empty array being passed down on refresh
-// generally how to pass down state in such a way that routes dont have empty arrays/objects when you reload them? this happens with jobs which affects trying to work with nested data 
-// after state fixes (above) fix job name in freelancer.
+// will useContext solve the problem of having to fetch in the jobPage (details page)? 
 
 // i want to update multiple freelancer objects in the array at the same time - how do i do that? (this would eliminate need for freelancersAvailable state)
-
-// TO DO:
-// add delete to freelancer
 
 function App() {
 
   const [freelancers, setFreelancers] = useState([]);
   const [jobs, setJobs] = useState([]);
+  const [job, setJob] = useState([]);
   const [freelancersAvailable, setFreelancersAvailable] = useState([]);
 
+  useEffect(() => {
+    fetch("http://localhost:9292/jobs")
+      .then(r => r.json())
+      .then(jobData => setJobs(jobData));
+    }, []);
+  
   useEffect(() => {
     fetch("http://localhost:9292/freelancers")
       .then(r => r.json())
@@ -33,12 +35,6 @@ function App() {
         setFreelancersAvailable(freelancerData.filter(f => f.is_available));
       });
   }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:9292/jobs")
-      .then(r => r.json())
-      .then(jobData => setJobs(jobData));
-    }, []);
 
   function dateToString(date) {
       let d = new Date(date),
@@ -52,6 +48,10 @@ function App() {
           day = '0' + day;
 
       return [year, month, day].join('-');
+  }
+
+  function handleJobShowClick(jobObj) {
+    setJob(jobObj);
   }
 
   function handleUpdateFreelancer(updatedFreelancer) {
@@ -109,10 +109,10 @@ function App() {
       <NavBar />
       <Switch>
         <Route exact path="/jobs">
-          <JobList jobs={jobs} dateToString={dateToString} />
+          <JobList jobs={jobs} dateToString={dateToString} onJobShowClick={handleJobShowClick} />
         </Route>
         <Route path="/jobs/:id">
-          <JobPage freelancers={freelancers} freelancersAvailable={freelancersAvailable} jobs={jobs} onDeleteJob={handleDeleteJob} onUpdateFreelancer={handleUpdateFreelancer} onUpdateJob={handleUpdateJob} dateToString={dateToString} />
+          <JobPage freelancers={freelancers} job={job} freelancersAvailable={freelancersAvailable} jobs={jobs} onDeleteJob={handleDeleteJob} onUpdateFreelancer={handleUpdateFreelancer} onUpdateJob={handleUpdateJob} dateToString={dateToString} />
         </Route>
         <Route path="/freelancers">
           <FreelancerList freelancers={freelancers} freelancersAvailable={freelancersAvailable} onUpdateFreelancerSave={handleUpdateFreelancerSave} jobs={jobs} onDeleteFreelancer={handleDeleteFreelancer}/>

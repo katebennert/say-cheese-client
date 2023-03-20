@@ -20,8 +20,8 @@ function Freelancer({ freelancer, freelancersAvailable, jobs, onUpdateFreelancer
                     <p className="user-follow-info">{freelancer.freelancer_type}</p>
                 </div> 
                 <p className="description">{freelancer.bio}</p>
-                {/* this is the nested data issue */}
-                <p>{freelancer.name}'s Current Project: {/*freelancer.job_id ? jobs.find(job => job.id === freelancer.job_id).name : "N/A"*/}</p>
+                {/* this is the jobs state issue (because jobs is not set yet?) */}
+                <p>{freelancer.name}'s Current Project: {freelancer.job_id ? jobs.find(job => job.id === freelancer.job_id).name : "N/A"}</p>
             </div> 
             <button onClick={handleUpdateStatusClick} className="freelancer-button-green">Update {freelancer.name}'s Profile</button>
         </div> 
