@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
-function JobPage({ freelancers, onUpdateFreelancer, onDeleteJob, dateToString }) {
+function JobPage({ freelancers, freelancersAvailable, onUpdateFreelancer, onDeleteJob, dateToString }) {
     const { id } = useParams();
     const history = useHistory();
     const [job, setJob] = useState({});
@@ -30,7 +30,6 @@ function JobPage({ freelancers, onUpdateFreelancer, onDeleteJob, dateToString })
             .then(deletedJob => {
                 onDeleteJob(deletedJob, freelancersOn);
                 history.push("/jobs");
-                //update state of freelancers
             })
     }
 
@@ -91,13 +90,11 @@ function JobPage({ freelancers, onUpdateFreelancer, onDeleteJob, dateToString })
  </div>  
     )
 
-    const availableFreelancers = freelancers.filter(f => f.is_available);
-
     const freelancerList = (
         <div className="assign-freelancer-box">
             <h3>Available Freelancers:</h3>
             <div className="freelancer-list-container">
-                {availableFreelancers.map(freelancer => (
+                {freelancersAvailable.map(freelancer => (
                     <div className="assign-freelancer-list-item" key={freelancer.id}>
                         <div>{freelancer.name} - {freelancer.freelancer_type}
                             <button onClick={handleAssignToJobClick} value={freelancer.id}>Assign to Job</button>

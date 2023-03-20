@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import UpdateFreelancer from "./UpdateFreelancer";
 
-function Freelancer({ freelancer, jobs, onUpdateFreelancerSave }) {
+function Freelancer({ freelancer, freelancersAvailable, jobs, onUpdateFreelancerSave }) {
 
   const [isUpdating, setIsUpdating] = useState(false);
+
+  console.log(jobs)
 
   function handleUpdateStatusClick() {
     setIsUpdating(true)
@@ -16,7 +18,7 @@ function Freelancer({ freelancer, jobs, onUpdateFreelancerSave }) {
             <div className="box-top">
                 <img className="box-image" src={freelancer.image_url} alt={freelancer.name}/>
                 <div className="title-flex">
-                    <h3 className="box-title">{freelancer.name} {/*freelancer.is_available ? "✅" : ""*/}</h3>
+                    <h3 className="box-title">{freelancer.name} {freelancersAvailable.includes(freelancer) ? "✅" : ""}</h3>
                     <p className="user-follow-info">{freelancer.freelancer_type}</p>
                 </div> 
                 <p className="description">{freelancer.bio}</p>
