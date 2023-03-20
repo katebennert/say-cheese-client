@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-function Job({ job, dateToString, onJobShowClick }) {
+function Job({ job, dateToString }) {
 
   return (
     <div className="job-card-container">
@@ -20,7 +20,7 @@ function Job({ job, dateToString, onJobShowClick }) {
                     </div>
                 </div> {/* box-top */}
                 <div className="job-buttons-container">
-                    <Link to={`/jobs/${job.id}`}><button className="job-button" onClick={() => onJobShowClick(job)} >View Job Page</button></Link>
+                    <NavLink to={`/jobs/${job.id}`}><button className="job-button" >View Job Page</button></NavLink>
                 </div>
             </div> 
     </div> 

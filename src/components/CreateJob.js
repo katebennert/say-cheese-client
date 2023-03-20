@@ -14,7 +14,7 @@ function CreateJob({ onCreateNewJob }) {
         freelancers_required: ""
     });
 
-    function handleChange(e) {
+    const handleChange = (e) => {
         const name = e.target.name;
         let value = e.target.value;
 
@@ -28,7 +28,7 @@ function CreateJob({ onCreateNewJob }) {
         });
     }
 
-    function handleSubmit(e) {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         fetch("http://localhost:9292/jobs", {

@@ -9,23 +9,17 @@ import NavBar from './NavBar';
 import Home from './Home';
 import JobPage from './JobPage';
 
-// QUESTIONS:
-// will useContext solve the problem of having to fetch in the jobPage (details page)? 
-
-// i want to update multiple freelancer objects in the array at the same time - how do i do that? (this would eliminate need for freelancersAvailable state)
-
 function App() {
 
   const [freelancers, setFreelancers] = useState([]);
   const [jobs, setJobs] = useState([]);
-  const [job, setJob] = useState([]);
   const [freelancersAvailable, setFreelancersAvailable] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:9292/jobs")
       .then(r => r.json())
       .then(jobData => setJobs(jobData));
-    }, []);
+  }, []);
   
   useEffect(() => {
     fetch("http://localhost:9292/freelancers")
@@ -36,7 +30,7 @@ function App() {
       });
   }, []);
 
-  function dateToString(date) {
+  const dateToString = (date) => {
       let d = new Date(date),
           month = '' + (d.getMonth() + 1),
           day = '' + d.getDate(),
@@ -50,11 +44,7 @@ function App() {
       return [year, month, day].join('-');
   }
 
-  function handleJobShowClick(jobObj) {
-    setJob(jobObj);
-  }
-
-  function handleUpdateFreelancer(updatedFreelancer) {
+  const handleUpdateFreelancer = (updatedFreelancer) => {
 
     const updatedFreelancers = freelancers.map(freelancer => {
       if (freelancer.id === updatedFreelancer.id) {
@@ -67,15 +57,21 @@ function App() {
       setFreelancersAvailable(updatedFreelancers.filter(f => f.is_available));
   }
 
-  function handleDeleteFreelancer(deletedFreelancer){
+  const handleDeleteFreelancer = (deletedFreelancer) => {
     setFreelancers(freelancers.filter(f => f.id !== deletedFreelancer.id));
   }
 
-  function handleUpdateFreelancerSave(updatedFreelancer) {
+  const handleUpdateFreelancerSave = (updatedFreelancer) => {
     setFreelancers(freelancers.map(freelancer => freelancer.id === updatedFreelancer.id ? updatedFreelancer : freelancer))
   }
 
-  function handleDeleteJob(deletedJob, freelancersToUpdate) {
+  const handleDeleteJob = (deletedJob, freelancersToUpdate) => {
+
+    // here is where i want to upate more than one freelancer in state. what is the best way to do this?
+    // i did figure this out server side but since i am only sending a request to jobs i dont get json data back from freelancers.
+    // when i get a json response back from the delete it does not include freelancers bc their job_ids are nullified
+    // however, i do have access to this data from the front end which is what i'm using here
+
     setJobs(jobs.filter(job => job.id !== deletedJob.id));
 
     const updatedFreelancers = freelancersToUpdate.map(f => (
@@ -85,7 +81,7 @@ function App() {
     setFreelancersAvailable([...updatedFreelancers, ...freelancersAvailable]);
   }
 
-  function handleUpdateJob(updatedJob) {
+  const handleUpdateJob = (updatedJob) => {
       const updatedJobs = jobs.map((job) => {
         if (job.id === updatedJob.id) {
           return updatedJob;
@@ -96,11 +92,11 @@ function App() {
       setJobs(updatedJobs);
   }
 
-  function handleCreateNewJob(newJob) {
+  const handleCreateNewJob = (newJob) => {
     setJobs([...jobs, newJob]);
   }
 
-  function handleCreateNewFreelancer(newFreelancer) {
+  const handleCreateNewFreelancer = (newFreelancer) => {
     setFreelancers([...freelancers, newFreelancer]);
   }
 
@@ -109,10 +105,10 @@ function App() {
       <NavBar />
       <Switch>
         <Route exact path="/jobs">
-          <JobList jobs={jobs} dateToString={dateToString} onJobShowClick={handleJobShowClick} />
+          <JobList jobs={jobs} dateToString={dateToString} />
         </Route>
         <Route path="/jobs/:id">
-          <JobPage freelancers={freelancers} job={job} freelancersAvailable={freelancersAvailable} jobs={jobs} onDeleteJob={handleDeleteJob} onUpdateFreelancer={handleUpdateFreelancer} onUpdateJob={handleUpdateJob} dateToString={dateToString} />
+          <JobPage freelancers={freelancers} freelancersAvailable={freelancersAvailable} jobs={jobs} onDeleteJob={handleDeleteJob} onUpdateFreelancer={handleUpdateFreelancer} onUpdateJob={handleUpdateJob} dateToString={dateToString} />
         </Route>
         <Route path="/freelancers">
           <FreelancerList freelancers={freelancers} freelancersAvailable={freelancersAvailable} onUpdateFreelancerSave={handleUpdateFreelancerSave} jobs={jobs} onDeleteFreelancer={handleDeleteFreelancer}/>

@@ -13,7 +13,7 @@ function CreateFreelancer({ onCreateNewFreelancer }) {
         is_available: true
     });
 
-    function handleChange(e) {
+    const handleChange = (e) => {
         const name = e.target.name;
         let value = e.target.value;
 
@@ -23,7 +23,7 @@ function CreateFreelancer({ onCreateNewFreelancer }) {
         });
     }
 
-    function handleSubmit(e) {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         fetch("http://localhost:9292/freelancers", {

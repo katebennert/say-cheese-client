@@ -4,7 +4,7 @@ function UpdateFreelancer({ freelancer, onUpdateFreelancerSave, setIsUpdating, o
 
     const [updatedFreelancer, setUpdatedFreelancer] = useState(freelancer);
 
-    function handleUpdateSubmit(e) {
+    const handleUpdateSubmit = (e) => {
         e.preventDefault();
         
         fetch(`http://localhost:9292/freelancers/${freelancer.id}`, {
@@ -23,7 +23,7 @@ function UpdateFreelancer({ freelancer, onUpdateFreelancerSave, setIsUpdating, o
         
     }
 
-    function handleChange(e) {
+    const handleChange = (e) => {
         const name = e.target.name;
         let value = e.target.value;
 
@@ -37,7 +37,7 @@ function UpdateFreelancer({ freelancer, onUpdateFreelancerSave, setIsUpdating, o
         });
     }
 
-    function handleDeleteFreelancerClick(e) {
+    const handleDeleteFreelancerClick = (e) => {
         const freelancerID = e.target.value;
 
         fetch(`http://localhost:9292/freelancers/${freelancerID}`, {

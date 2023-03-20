@@ -2,29 +2,28 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
-function JobPage({ freelancers, job, freelancersAvailable, onUpdateFreelancer, onDeleteJob, dateToString }) {
+function JobPage({ freelancers, jobs, freelancersAvailable, onUpdateFreelancer, onDeleteJob, dateToString }) {
     const { id } = useParams();
     const history = useHistory();
-    // const [job, setJob] = useState([]);
+    const [job, setJob] = useState({
+        name: "",
+        company: "",
+        company_logo: "",
+        start_date: "",
+        end_date: "",
+        description: "",
+        freelancers_required: ""
+    });
     const [showFreelancerList, setShowFreelancerList] = useState(false);
     const [freelancersOn, setFreelancersOn] = useState([]);
     const [freelancersNeeded, setFreelancersNeeded] = useState(null);
 
-    // how do i fix the fact that when i refresh is passes down the state of job as [] (without another fetch)? (logically this is because state of job hasn't been set yet but how else are you supposed to get that info if not from clicking "view job page")
+    useEffect(() => {
+        const currentJob = jobs.find(j => j.id === parseInt(id));
+        setJob(currentJob);
+    }, [jobs]);
 
-    // useEffect(() => {
-    //     fetch(`http://localhost:9292/jobs/${id}`)
-    //       .then(r => r.json())
-    //       .then(jobData => {
-    //         setJob(jobData);
-    //         setFreelancersOn(jobData.freelancers);
-    //         setFreelancersNeeded(jobData.freelancers_required - jobData.freelancers.length);
-    //       });
-    //   }, [id]);
-
-    console.log(job);
-
-    function handleDeleteClick() {
+    const handleDeleteClick = () => {
         fetch(`http://localhost:9292/jobs/${id}`, {
           method: "DELETE",
         })
@@ -35,11 +34,11 @@ function JobPage({ freelancers, job, freelancersAvailable, onUpdateFreelancer, o
             })
     }
 
-    function handleAssignFreelancersClick() {
+    const handleAssignFreelancersClick = () => {
         setShowFreelancerList(true);
     }
 
-    function handleAssignToJobClick(e) {
+    const handleAssignToJobClick = (e) => {
        const freelancerID = e.target.value;
        const freelancerToAssign = freelancers.find(f => f.id === Number(freelancerID));
 
