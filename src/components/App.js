@@ -12,11 +12,9 @@ import JobPage from './JobPage';
 // QUESTIONS:
 // will useContext solve the problem of having to fetch in the jobPage? i put the fetch back in because using state resulted in empty array being passed down on refresh
 // generally how to pass down state in such a way that routes dont have empty arrays/objects when you reload them? this happens with jobs which affects trying to work with nested data 
-// after state fixes (above) fix freelancer available badge in freelancer, job name in freelancer.
+// after state fixes (above) fix job name in freelancer.
 
-// BONUS QUESTIONS (can fulfil requirements with freelancer delete)
-// how to update freelancers state with multiple array elements after DELETE? This will fix available freelancer list (server side is good)
-// can also solve the above problem by making 2 patch requests but not sure if that's the best way
+// i want to update multiple freelancer objects in the array at the same time - how do i do that? (this would eliminate need for freelancersAvailable state)
 
 // TO DO:
 // add delete to freelancer
@@ -69,6 +67,10 @@ function App() {
       setFreelancersAvailable(updatedFreelancers.filter(f => f.is_available));
   }
 
+  function handleDeleteFreelancer(deletedFreelancer){
+    setFreelancers(freelancers.filter(f => f.id !== deletedFreelancer.id));
+  }
+
   function handleUpdateFreelancerSave(updatedFreelancer) {
     setFreelancers(freelancers.map(freelancer => freelancer.id === updatedFreelancer.id ? updatedFreelancer : freelancer))
   }
@@ -79,7 +81,7 @@ function App() {
     const updatedFreelancers = freelancersToUpdate.map(f => (
       {...f, is_available: true}
     ));
-      
+
     setFreelancersAvailable([...updatedFreelancers, ...freelancersAvailable]);
   }
 
@@ -113,7 +115,7 @@ function App() {
           <JobPage freelancers={freelancers} freelancersAvailable={freelancersAvailable} jobs={jobs} onDeleteJob={handleDeleteJob} onUpdateFreelancer={handleUpdateFreelancer} onUpdateJob={handleUpdateJob} dateToString={dateToString} />
         </Route>
         <Route path="/freelancers">
-          <FreelancerList freelancers={freelancers} freelancersAvailable={freelancersAvailable} onUpdateFreelancerSave={handleUpdateFreelancerSave} jobs={jobs}/>
+          <FreelancerList freelancers={freelancers} freelancersAvailable={freelancersAvailable} onUpdateFreelancerSave={handleUpdateFreelancerSave} jobs={jobs} onDeleteFreelancer={handleDeleteFreelancer}/>
         </Route>
         <Route path="/create-job">
           <CreateJob onCreateNewJob={handleCreateNewJob} />

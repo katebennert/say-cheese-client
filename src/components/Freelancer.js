@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import UpdateFreelancer from "./UpdateFreelancer";
 
-function Freelancer({ freelancer, freelancersAvailable, jobs, onUpdateFreelancerSave }) {
+function Freelancer({ freelancer, freelancersAvailable, jobs, onUpdateFreelancerSave, onDeleteFreelancer }) {
 
   const [isUpdating, setIsUpdating] = useState(false);
-
-  console.log(jobs)
 
   function handleUpdateStatusClick() {
     setIsUpdating(true)
@@ -13,7 +11,7 @@ function Freelancer({ freelancer, freelancersAvailable, jobs, onUpdateFreelancer
   
   return (
     <div className="freelancer-card">
-      {isUpdating ? <UpdateFreelancer freelancer={freelancer} isUpdating={isUpdating} setIsUpdating={setIsUpdating} onUpdateFreelancerSave={onUpdateFreelancerSave} /> :
+      {isUpdating ? <UpdateFreelancer freelancer={freelancer} isUpdating={isUpdating} setIsUpdating={setIsUpdating} onUpdateFreelancerSave={onUpdateFreelancerSave} onDeleteFreelancer={onDeleteFreelancer} /> :
         <div className="box">
             <div className="box-top">
                 <img className="box-image" src={freelancer.image_url} alt={freelancer.name}/>

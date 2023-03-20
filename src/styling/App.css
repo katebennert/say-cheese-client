@@ -404,6 +404,20 @@ a {
   border-radius: 0.35rem;
 }
 
+.freelancer-button-delete {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: auto;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  background: rgba(255, 0, 0, 0.719);
+  border: solid 2px black;
+  border-radius: 0.35rem;
+}
+
 /* .freelancer-button-red {
   display: block;
   justify-content: center;

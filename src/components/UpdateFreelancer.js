@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function UpdateFreelancer({ freelancer, onUpdateFreelancerSave, setIsUpdating }) {
+function UpdateFreelancer({ freelancer, onUpdateFreelancerSave, setIsUpdating, onDeleteFreelancer }) {
 
     const [updatedFreelancer, setUpdatedFreelancer] = useState(freelancer);
 
@@ -35,6 +35,18 @@ function UpdateFreelancer({ freelancer, onUpdateFreelancerSave, setIsUpdating })
             ...updatedFreelancer,
             [name]: value
         });
+    }
+
+    function handleDeleteFreelancerClick(e) {
+        const freelancerID = e.target.value;
+
+        fetch(`http://localhost:9292/freelancers/${freelancerID}`, {
+          method: "DELETE",
+        })
+            .then(r => r.json())
+            .then(deletedFreelancer => {
+                onDeleteFreelancer(deletedFreelancer);
+            })
     }
 
     return (
@@ -84,6 +96,7 @@ function UpdateFreelancer({ freelancer, onUpdateFreelancerSave, setIsUpdating })
                 </div> 
                 <button type="submit" className="freelancer-button-update">Save Changes</button>
             </form>
+            <button className="freelancer-button-delete" onClick={handleDeleteFreelancerClick} value={freelancer.id} >🙅‍♀️ Delete Freelancer 🙅‍♀️</button>
         </div> 
     )
 }
