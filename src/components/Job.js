@@ -1,26 +1,26 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-function Job({ job, dateToString }) {
+function Job({ currentJob, dateToString }) {
 
   return (
     <div className="job-card-container">
         <div className="job-box">
                 <div className="job-box-top">
-                    <img className="job-box-image" src={job.company_logo} alt={job.name}/>
+                    <img className="job-box-image" src={currentJob.company_logo} alt={currentJob.name}/>
                     <div className="job-title-flex">
-                        <h3 className="job-box-title">{job.name}</h3>
-                        <p className="company">{job.company}</p>
+                        <h3 className="job-box-title">{currentJob.name}</h3>
+                        <p className="company">{currentJob.company}</p>
                     </div> 
-                    <p className="job-description">{job.description}</p>
+                    <p className="job-description">{currentJob.description}</p>
                     <div className="job-info">
-                        <p>Start Date: {dateToString(job.start_date)}</p>
-                        <p>End Date: {dateToString(job.end_date)}</p>
-                        <p>Freelancers Required on Job: {job.freelancers_required}</p>
+                        <p>Start Date: {dateToString(currentJob.start_date)}</p>
+                        <p>End Date: {dateToString(currentJob.end_date)}</p>
+                        <p>Freelancers Required on Job: {currentJob.freelancers_required}</p>
                     </div>
                 </div> {/* box-top */}
                 <div className="job-buttons-container">
-                    <NavLink to={`/jobs/${job.id}`}><button className="job-button" >View Job Page</button></NavLink>
+                    <NavLink to={`/jobs/${currentJob.id}`}><button className="job-button" >View Job Page</button></NavLink>
                 </div>
             </div> 
     </div> 

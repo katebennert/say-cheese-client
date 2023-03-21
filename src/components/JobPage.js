@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
-function JobPage({ freelancers, jobs, freelancersAvailable, onUpdateFreelancer, onDeleteJob, dateToString }) {
+function JobPage({ freelancers, jobs, freelancersAvailable, onUpdateFreelancer, onDeleteJob, onUpdateJob, dateToString }) {
     const { id } = useParams();
     const history = useHistory();
     const [job, setJob] = useState({
@@ -11,19 +11,16 @@ function JobPage({ freelancers, jobs, freelancersAvailable, onUpdateFreelancer, 
         company_logo: "",
         start_date: "",
         end_date: "",
+        freelancers: "",
         description: "",
         freelancers_required: ""
     });
     const [showFreelancerList, setShowFreelancerList] = useState(false);
-    const [freelancersOn, setFreelancersOn] = useState([]);
-    const [freelancersNeeded, setFreelancersNeeded] = useState(null);
 
     useEffect(() => {
         const currentJob = jobs.find(j => j.id === parseInt(id));
         setJob(currentJob);
-        setFreelancersOn(currentJob.freelancers);
-        setFreelancersNeeded(currentJob.freelancers_required - currentJob.freelancers.length)
-    }, [jobs]);
+    }, [id, jobs]);
 
     const handleDeleteClick = () => {
         fetch(`http://localhost:9292/jobs/${id}`, {
@@ -31,7 +28,7 @@ function JobPage({ freelancers, jobs, freelancersAvailable, onUpdateFreelancer, 
         })
             .then(r => r.json())
             .then(deletedJob => {
-                onDeleteJob(deletedJob, freelancersOn);
+                onDeleteJob(deletedJob, job.freelancers);
                 history.push("/jobs");
             })
     }
@@ -44,7 +41,7 @@ function JobPage({ freelancers, jobs, freelancersAvailable, onUpdateFreelancer, 
        const freelancerID = e.target.value;
        const freelancerToAssign = freelancers.find(f => f.id === Number(freelancerID));
 
-        if (job.freelancers_required - freelancersOn.length > 0) {
+        if (job.freelancers_required - job.freelancers.length > 0) {
             fetch(`http://localhost:9292/freelancers/${freelancerID}`, {
                 method: "PATCH",
                 headers: {
@@ -59,13 +56,15 @@ function JobPage({ freelancers, jobs, freelancersAvailable, onUpdateFreelancer, 
                 .then(r => r.json())
                 .then(freelancerData => {
                     onUpdateFreelancer(freelancerData);
-                    setFreelancersOn([...freelancersOn, freelancerData]);
-                    setFreelancersNeeded(freelancersNeeded - 1);
+                    setJob({...job, freelancers: [...job.freelancers, freelancerToAssign]});
+                    onUpdateJob({...job, freelancers: [...job.freelancers, freelancerToAssign]});
                 })
         } else {
             alert("This job is full!")
         }
     }
+
+    console.log(job)
 
     const jobPageCard = (
         <div className="job-page-card-container">
@@ -80,9 +79,9 @@ function JobPage({ freelancers, jobs, freelancersAvailable, onUpdateFreelancer, 
              <div className="job-info">
                  <p>Start Date: {dateToString(job.start_date)}</p>
                  <p>End Date: {dateToString(job.end_date)}</p>
-                 <p>Freelancers Needed: {freelancersNeeded}</p>
-                 <p>Freelancers On This Project: {freelancersOn.map(f => f.name).join(", ")}</p>
-                 <p>{job.freelancers_required - freelancersOn.length === 0 ? "FULL" : "HIRING"}!</p>
+                 <p>Freelancers Needed: {job.freelancers_required - job.freelancers.length}</p>
+                 <p>Freelancers On This Project: {job.freelancers ? job.freelancers.map(f => f.name).join(", "): null}</p>
+                 <p>{job.freelancers_required - job.freelancers.length === 0 ? "FULL" : "HIRING"}!</p>
              </div>
          </div> 
          <div className="job-buttons-container">

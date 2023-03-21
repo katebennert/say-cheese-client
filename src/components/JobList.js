@@ -5,8 +5,8 @@ function JobList({ jobs, dateToString }) {
 
     return (
         <div className="job-wrap">
-            {jobs.map(job => (
-                <Job key={job.id} job={job} dateToString={dateToString} />
+            {jobs.map(currentJob => (
+                <Job key={currentJob.id} currentJob={currentJob} dateToString={dateToString} />
             ))}
         </div>
     )

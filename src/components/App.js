@@ -64,21 +64,17 @@ function App() {
   const handleUpdateFreelancerSave = (updatedFreelancer) => {
     setFreelancers(freelancers.map(freelancer => freelancer.id === updatedFreelancer.id ? updatedFreelancer : freelancer))
   }
-
+  
   const handleDeleteJob = (deletedJob, freelancersToUpdate) => {
-
-    // here is where i want to upate more than one freelancer in state. what is the best way to do this?
-    // i did figure this out server side but since i am only sending a request to jobs i dont get json data back from freelancers.
-    // when i get a json response back from the delete it does not include freelancers bc their job_ids are nullified
-    // however, i do have access to this data from the front end which is what i'm using here
-
-    setJobs(jobs.filter(job => job.id !== deletedJob.id));
 
     const updatedFreelancers = freelancersToUpdate.map(f => (
       {...f, is_available: true}
     ));
 
     setFreelancersAvailable([...updatedFreelancers, ...freelancersAvailable]);
+    setJobs(jobs.filter(job => job.id !== deletedJob.id));
+
+    // for checks to work need a way to set freelancers
   }
 
   const handleUpdateJob = (updatedJob) => {
@@ -105,13 +101,13 @@ function App() {
       <NavBar />
       <Switch>
         <Route exact path="/jobs">
-          <JobList jobs={jobs} dateToString={dateToString} />
+          <JobList dateToString={dateToString} jobs={jobs} />
         </Route>
         <Route path="/jobs/:id">
-          <JobPage freelancers={freelancers} freelancersAvailable={freelancersAvailable} jobs={jobs} onDeleteJob={handleDeleteJob} onUpdateFreelancer={handleUpdateFreelancer} onUpdateJob={handleUpdateJob} dateToString={dateToString} />
+          <JobPage freelancers={freelancers} jobs={jobs} freelancersAvailable={freelancersAvailable} onDeleteJob={handleDeleteJob} onUpdateFreelancer={handleUpdateFreelancer} onUpdateJob={handleUpdateJob} dateToString={dateToString} />
         </Route>
         <Route path="/freelancers">
-          <FreelancerList freelancers={freelancers} freelancersAvailable={freelancersAvailable} onUpdateFreelancerSave={handleUpdateFreelancerSave} jobs={jobs} onDeleteFreelancer={handleDeleteFreelancer}/>
+          <FreelancerList freelancers={freelancers} freelancersAvailable={freelancersAvailable} onUpdateFreelancerSave={handleUpdateFreelancerSave} onDeleteFreelancer={handleDeleteFreelancer}/>
         </Route>
         <Route path="/create-job">
           <CreateJob onCreateNewJob={handleCreateNewJob} />
