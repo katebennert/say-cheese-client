@@ -64,8 +64,6 @@ function JobPage({ freelancers, jobs, freelancersAvailable, onUpdateFreelancer, 
         }
     }
 
-    console.log(job)
-
     const jobPageCard = (
         <div className="job-page-card-container">
      <div className="job-box">

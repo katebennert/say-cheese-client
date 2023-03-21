@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import UpdateFreelancer from "./UpdateFreelancer";
 
-function Freelancer({ freelancer, freelancersAvailable, jobs, onUpdateFreelancerSave, onDeleteFreelancer }) {
+function Freelancer({ freelancer, freelancersAvailable, onUpdateFreelancerSave, onDeleteFreelancer }) {
 
   const [isUpdating, setIsUpdating] = useState(false);
 
   const handleUpdateStatusClick = () => {
     setIsUpdating(true)
   }
+
+  const availableIDs = freelancersAvailable.map(f => f.id);
   
   return (
     <div className="freelancer-card">
@@ -16,7 +18,7 @@ function Freelancer({ freelancer, freelancersAvailable, jobs, onUpdateFreelancer
             <div className="box-top">
                 <img className="box-image" src={freelancer.image_url} alt={freelancer.name}/>
                 <div className="title-flex">
-                    <h3 className="box-title">{freelancer.name} {freelancersAvailable.includes(freelancer) ? "✅" : ""}</h3>
+                    <h3 className="box-title">{freelancer.name} {availableIDs.includes(freelancer.id) ? "✅" : ""}</h3>
                     <p className="user-follow-info">{freelancer.freelancer_type}</p>
                 </div> 
                 <p className="description">{freelancer.bio}</p>
